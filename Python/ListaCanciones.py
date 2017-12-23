@@ -5,6 +5,7 @@ class InfoCancion(object):
 
 class NodoCancion(object):
 	def __init__(self, anterior, info, siguiente):
+		self.id = 0
 		self.info = info
 		self.siguiente = siguiente
 		self.anterior = anterior
@@ -19,23 +20,26 @@ class ListaCanciones(object):
 
 	def __existe(self, info):
 		aux = self.inicio
-		for x in range(self.tamano):
-			if aux.info == info:
+		for iterador in range(self.tamano):
+			if aux.info.nombre == info.nombre and aux.info.path == info.path:
 				return True
 			aux = aux.siguiente
 		return False
 
-	def insertar(self, info):
+	def insertar(self, nombre, path):
 		nuevo = None
+		info = InfoCancion(nombre, path)
 		if self.estaVacia():
 			nuevo = NodoCancion(None, info, None)
 			nuevo.siguiente = nuevo
 			nuevo.anterior = nuevo
+			nuevo.id = 0
 			self.inicio = nuevo
 		elif self.__existe(info):
 			return False
 		else:
 			nuevo = NodoCancion(self.inicio.anterior, info, self.inicio)
+			nuevo.id = self.inicio.anterior.id + 1
 			self.inicio.anterior.siguiente = nuevo
 			self.inicio.anterior = nuevo
 		self.tamano = self.tamano + 1
@@ -43,7 +47,7 @@ class ListaCanciones(object):
 
 	def eliminar(self, nombre):
 		aux = self.inicio
-		for x in range(self.tamano):
+		for iterador in range(self.tamano):
 			if aux.info.nombre == nombre:
 				self.tamano = self.tamano - 1
 				if self.tamano == 1:
@@ -56,18 +60,3 @@ class ListaCanciones(object):
 				return True
 			aux = aux.siguiente
 		return False
-
-lista = ListaCanciones()
-lista.insertar(1)
-lista.insertar(2)
-lista.insertar(3)
-lista.insertar(4)
-
-i = lista.tamano + 1
-actual = lista.inicio
-while(i > 0):
-	print str(actual.info)
-	print "|"
-	print "v"
-	actual = actual.siguiente
-	i= i - 1
