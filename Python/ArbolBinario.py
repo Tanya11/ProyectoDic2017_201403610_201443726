@@ -3,7 +3,7 @@ import ListaCanciones
 class NodoBinario(object):
 	def __init__(self, album):
 		self.album = album
-		self.lista = None
+		self.lista = ListaCanciones.ListaCanciones()
 		self.izquierda = ArbolBinario()
 		self.derecha = ArbolBinario()
 
@@ -41,13 +41,3 @@ class ArbolBinario(object):
 				self.nodo.izquierda.eliminar(album)
 			else:
 				self.nodo.derecha.eliminar(album)
-
-arbol = ArbolBinario()
-arbol.insertar(10)
-arbol.insertar(5)
-arbol.insertar(15)
-
-nodo = arbol.nodo
-print nodo.izquierda.nodo.album
-print nodo.album
-print nodo.derecha.nodo.album
