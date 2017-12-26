@@ -212,3 +212,64 @@ class Matriz:
 				print "El dato no existe alv"
 		else:
 			print "El dato no existe alv"
+
+	def graficar(self):
+		Grafo_dot = "digraph Matriz{\n\trankdir=UD;\n\tnode [shape = box];\n\tlabel = \"Matriz\"" 
+		paraAbajo = self.inicio
+		paraDerecha = paraAbajo.derecha
+		y = 0
+		while paraAbajo != None:
+			if y == 0:
+				Grafo_dot += "\n\t{\n\t\trank=min;"
+				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.id + "\", rankdir = LR]"
+			elif paraAbajo.abajo == None:
+				Grafo_dot += "\n\t{\n\t\trank=max;"
+				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.id + "\"]"
+			else:	
+				Grafo_dot += "\n\t{\n\t\trank=same;"
+				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.id + "\"]"
+			while paraDerecha != None:
+				if y == 0:
+					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.id + "\", rankdir = LR]"
+				else:
+					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.id + "\"]"
+				paraDerecha = paraDerecha.derecha
+			Grafo_dot += "\n\t}"
+			y += 1
+			paraAbajo = paraAbajo.abajo
+			if paraAbajo != None:
+				paraDerecha = paraAbajo.derecha
+		Grafo_dot += "\n\n"
+		paraAbajo = self.inicio
+		paraDerecha = paraAbajo.derecha
+		while paraAbajo != None:
+			if paraAbajo.abajo != None:
+				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.abajo.id) + ";"
+			if paraAbajo.arriba != None:
+				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.arriba.id) + ";"
+			if paraAbajo.derecha != None:
+				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.derecha.id) + ";"
+			if paraAbajo.izquierda != None:
+				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.izquierda.id) + ";"
+			while paraDerecha != None:
+				if paraDerecha.abajo != None:
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.abajo.id) + ";"
+				if paraDerecha.arriba != None:
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.arriba.id) + ";"
+				if paraDerecha.derecha != None:
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.derecha.id) + ";"
+				if paraDerecha.izquierda != None:
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.izquierda.id) + ";"
+				if paraDerecha.atras != None:
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.atras.id) + ";"
+				if paraDerecha.adelante != None:
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.adelante.id) + ";"
+				paraDerecha = paraDerecha.derecha
+			paraAbajo = paraAbajo.abajo
+			if paraAbajo != None:
+				paraDerecha = paraAbajo.derecha
+		Grafo_dot += "\n}" 
+		Archivo = open('Matriz.dot', 'w') 
+		Archivo.write(Grafo_dot) 
+		Archivo.close() 
+		subprocess.call(['dot', 'Matriz.dot', '-o', 'Matriz.png', '-Tpng', '-Gcharset=utf8'])

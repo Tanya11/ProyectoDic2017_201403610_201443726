@@ -1,3 +1,5 @@
+import subprocess
+
 class InfoCancion(object):
 	def __init__(self, nombre, path):
 		self.nombre = nombre
@@ -60,3 +62,18 @@ class ListaCanciones(object):
 				return True
 			aux = aux.siguiente
 		return False
+
+	def graficar(self):
+		file = open('ListaCircular.dot', 'w')
+		file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
+		nodo = self.inicio
+		contador = 0
+		while contador < self.tamano:
+			file.write("nodo" + str(nodo.id) + " [label = \"" + nodo.info.nombre + "\"];\n")
+			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.siguiente.id) + ";\n")
+			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.anterior.id) + ";\n")
+			nodo = nodo.siguiente
+			contador += 1
+		file.write("\n}")
+		file.close()
+		subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png"])
