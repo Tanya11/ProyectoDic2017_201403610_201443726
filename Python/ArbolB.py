@@ -1,7 +1,8 @@
-import NodoB, Pagina
+import NodoB, Pagina, subprocess, commands
 
 class ArbolB(object):
 	def __init__ (self, orden):
+		self.grafo = ""
 		self.orden = orden
 		self.medio = orden / 2
 		self.raiz = Pagina.Pagina()
@@ -212,3 +213,33 @@ class ArbolB(object):
 			padre.ramas[contador] = padre.ramas[contador + 1]
 			contador = contador + 1
 		padre.cuenta = padre.cuenta - 1
+
+	def graficar(self):
+		archivo = open('ArbolB.dot','w')
+		archivo.write('digraph ArbolB{ \nnode[shape=record]\n')
+		self._genlazes(self.raiz)
+		archivo.write(self.grafo + "\n")
+		self.grafo = ""
+		self._gpaginas(self.raiz)
+		archivo.write(self.grafo + "\n}")
+		self.grafo = ""
+		archivo.close()
+		commands.getoutput('dot -Tpng arbolb.dot -o arbolb.png')
+
+	def _genlazes(self, actual):
+		if actual != None:
+			index = 0
+			while index <= actual.cuenta:
+				if actual.ramas[index] != None:
+					self.grafo += 'node'+ actual.nodos[1].artista + ':D' + str(index) + '-> node' + actual.ramas[index].nodos[1].artista + '\n'
+					self._genlazes(actual.ramas[index])
+				index += 1
+
+	def _gpaginas(self, actual):
+		if actual != None:
+			self.grafo += actual.graficar()
+			index = 0
+			while index <= actual.cuenta:
+				if actual.ramas[index]!= None:
+					self._gpaginas(actual.ramas[index])
+				index += 1

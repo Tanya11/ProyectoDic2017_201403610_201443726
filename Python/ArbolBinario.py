@@ -1,4 +1,4 @@
-import ListaCanciones
+import ListaCanciones, subprocess
 
 class NodoBinario(object):
 	def __init__(self, album):
@@ -41,3 +41,48 @@ class ArbolBinario(object):
 				self.nodo.izquierda.eliminar(album)
 			else:
 				self.nodo.derecha.eliminar(album)
+
+	def graficar(self):
+		cadena = "digraph arbol {\n"
+		if(self.nodo != None):
+			cadena = self.__listar(self.nodo, cadena)
+			cadena += "\n"
+			cadena = self.__enlazar(self.nodo, cadena)
+		cadena += "}"
+		Archivo = open('ArbolBinario.dot', 'w')
+		Archivo.write(cadena)
+		Archivo.close()
+		subprocess.call(['dot', 'ArbolBinario.dot', '-o', 'ArbolBinario.png', '-Tpng', '-Gcharset=utf8']) 
+
+	def __listar(self, actual, cadena):
+		if(actual != None):
+			cadena += "n" + str("".join(actual.album.split("."))) + " [label = \"" + str(actual.album) + "\"];\n"
+			if(actual.izquierda != None and actual.derecha != None):
+				cadena = self.__listar(actual.izquierda.nodo, cadena)
+				cadena = self.__listar(actual.derecha.nodo, cadena)
+			elif(actual.nodo.izquierda != None):
+				cadena = self.__listar(actual.izquierda.nodo, cadena)
+			elif(actual.nodo.derecha != None):
+				cadena = self.__listar(actual.derecha.nodo, cadena)
+		return cadena;
+
+	def __enlazar(self, actual, cadena):
+		if(actual != None):
+			if(actual.derecha.nodo != None):
+				cadena += "n" + str("".join(actual.album.split("."))) + " -> n" + str("".join(actual.derecha.nodo.album.split("."))) + "[label = \"d\"];\n"
+				cadena = self.__enlazar(actual.derecha.nodo, cadena)
+			if(actual.izquierda.nodo != None):
+				cadena += "n" + str("".join(actual.album.split("."))) + " -> n" + str("".join(actual.izquierda.nodo.album.split("."))) + "[label = \"i\"];\n"
+				cadena = self.__enlazar(actual.izquierda.nodo, cadena)
+		return cadena
+
+tree = ArbolBinario()
+# descomentando uno a uno se ve el proceso
+tree.insertar("hola.wma")
+tree.insertar("hola.png")
+tree.insertar("hola.jpg")
+tree.insertar("hola.zip")
+tree.insertar("hola.txt")
+#tree.insertar("hola.mp3")
+#tree.insertar("hola.mp4")
+tree.graficar()
