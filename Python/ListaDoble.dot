@@ -1,5 +1,0 @@
-digraph ListaDoble{
- label="ListaDoble"
- 	node [fontcolor="red",height=0.5,color="black"]
- 	edge [color="black", dir=fordware]
- 
