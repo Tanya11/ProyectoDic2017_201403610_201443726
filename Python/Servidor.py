@@ -7,7 +7,7 @@ app = Flask("ProyectoDic2017")
 
 # ESTRUCTURAS
 repertorio = Matriz.Matriz() # Todo
-artistas = ArbolB.ArbolB() # auxiliar
+artistas = ArbolB.ArbolB(5) # auxiliar
 albumes = ArbolBinario.ArbolBinario() # auxiliar
 canciones = ListaCanciones.ListaCanciones() # auxiliar
 usuarios = ListaDoble.ListaDoble() # Usuarios
@@ -60,7 +60,7 @@ def agregar_cancion():
 		canciones.insertar(nombre, path)
 		albumes = ArbolBinario.ArbolBinario()
 		albumes.insertar(album, canciones)
-		artistas = ArbolB.ArbolB()
+		artistas = ArbolB.ArbolB(5)
 		artistas.insertar(artista, albumes)
 		repertorio.insertar(ano, genero, artistas)
 	else: # Si existe el nodo con ese ano y genero
@@ -111,7 +111,7 @@ def eliminar_artistas():
 	return ""
 
 @app.route('/eliminar_artista', methods=['POST'])
-def eliminar_artistas():
+def eliminar_artista():
 	ano = str(request.form['ano'])
 	genero = str(request.form['genero'])
 	artista = str(request.form['artista'])
@@ -125,7 +125,7 @@ def eliminar_artistas():
 	return ""
 
 @app.route('/eliminar_album', methods=['POST'])
-def eliminar_artistas():
+def eliminar_album():
 	ano = str(request.form['ano'])
 	genero = str(request.form['genero'])
 	artista = str(request.form['artista'])
@@ -149,7 +149,7 @@ def eliminar_artistas():
 	return ""
 
 @app.route('/eliminar_cancion', methods=['POST'])
-def eliminar_artistas():
+def eliminar_cancion():
 	ano = str(request.form['ano'])
 	genero = str(request.form['genero'])
 	artista = str(request.form['artista'])
