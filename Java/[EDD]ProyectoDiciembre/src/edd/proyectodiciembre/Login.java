@@ -84,7 +84,9 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        abrirArchivo();
+         // archivo
+        LeerArchivo leerarchivo= new LeerArchivo();
+        leerarchivo.Archivo();
  
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -133,14 +135,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
-private String abrirArchivo() {
-String aux="";   
-String  texto="";
-JFileChooser file=new JFileChooser();
-        file.showOpenDialog(this);
-        File abre=file.getSelectedFile();
-  return texto;//El texto se almacena en el JTextArea
 
-}
 
 }

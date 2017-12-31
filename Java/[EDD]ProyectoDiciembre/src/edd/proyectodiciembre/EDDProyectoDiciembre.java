@@ -6,6 +6,8 @@
 
 package edd.proyectodiciembre;
 
+
+
 /**
  *
  * @author Usuario
@@ -17,6 +19,9 @@ public class EDDProyectoDiciembre {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+       //Tag raiz = JespXML.leerXML(new File("prueba.xml"));
+        
+        
         Login log = new Login();
         log.setVisible(true);
         Principal prin = new Principal();

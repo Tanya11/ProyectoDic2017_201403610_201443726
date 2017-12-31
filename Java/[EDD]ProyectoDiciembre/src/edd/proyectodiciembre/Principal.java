@@ -86,7 +86,7 @@ public class Principal extends javax.swing.JFrame {
         jComboBox1.setBackground(new java.awt.Color(0, 0, 51));
         jComboBox1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "GRAFICAR", "Matriz Dispersa", "Arbol B", "Arbol BB", "Lista Canciones", "Usuarios" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "GRAFICAR", "Matriz Dispersa", "Arbol B", "Arbol BB", "Lista Canciones", "Usuarios", "Canciones", "Cola Circular", " " }));
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 120, 30));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/play.jpg"))); // NOI18N
@@ -100,7 +100,6 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, 60, 60));
 
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/siguiente.jpg"))); // NOI18N
-        jButton7.setActionCommand("");
         getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, 60, 60));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/azul-marino.jpg"))); // NOI18N
@@ -114,7 +113,6 @@ public class Principal extends javax.swing.JFrame {
         jButton8.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         jButton8.setForeground(new java.awt.Color(255, 255, 255));
         jButton8.setText("ARTISTA");
-        jButton8.setActionCommand("ARTISTA");
         jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton8.setName("CargarArchivo"); // NOI18N
         getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 90, 30));
@@ -179,6 +177,11 @@ public class Principal extends javax.swing.JFrame {
         jButton13.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jButton13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/nuevaPlay.jpg"))); // NOI18N
         jButton13.setName("NuevaPlay"); // NOI18N
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 20, 140, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/azul.jpg"))); // NOI18N
@@ -224,6 +227,10 @@ public class Principal extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+      
+    }//GEN-LAST:event_jButton13ActionPerformed
 
     /**
      * @param args the command line arguments
