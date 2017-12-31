@@ -1,6 +1,4 @@
-import ArbolBinario
-
 class NodoB(object):
-	def __init__(self, artista):
+	def __init__(self, artista, albumes):
 		self.artista = artista
-		self.albumes = ArbolBinario.ArbolBinario()
+		self.albumes = albumes

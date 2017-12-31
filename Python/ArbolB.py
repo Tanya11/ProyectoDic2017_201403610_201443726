@@ -13,7 +13,7 @@ class ArbolB(object):
 		else:
 			indice = actual.cuenta
 			while (artista < actual.nodos[indice].artista and indice > 1):
-				indice = indice - 1
+				indice -= 1
 			return artista == actual.nodos[indice].artista, indice
 
 	def buscar(self, actual, artista, indice):
@@ -27,13 +27,13 @@ class ArbolB(object):
 			else:
 				return self.buscar(actual, artista, indice)
 
-	def insertar(self, artista):
-		nuevo = NodoB.NodoB(artista)
+	def insertar(self, artista, albumes):
+		nuevo = NodoB.NodoB(artista, albumes)
 		self.raiz = self.__insertar(self.raiz, nuevo)
 
 	def __insertar(self, raiz, artista):
 		subir = False
-		mediana = NodoB.NodoB("")
+		mediana = NodoB.NodoB("", None)
 		nuevo = Pagina.Pagina()
 		raiz_ = Pagina.Pagina()
 		subir, mediana, nuevo, raiz_ = self.__mover(raiz, artista, mediana, nuevo)
@@ -77,7 +77,7 @@ class ArbolB(object):
 		while(contador < self.orden):
 			auxiliar.nodos[contador - posicion] = actual.nodos[contador]
 			auxiliar.ramas[contador - posicion] = actual.ramas[contador]
-			contador = contador + 1
+			contador += 1
 		auxiliar.cuenta = (self.orden - 1) - posicion
 		actual.cuenta = posicion
 		if (indice <= self.medio):
@@ -86,7 +86,7 @@ class ArbolB(object):
 			auxiliar = self.__insertarEnHoja(auxiliar, mediana, nuevo, indice - posicion)
 		mediana = actual.nodos[actual.cuenta]
 		auxiliar.ramas[0] = actual.ramas[actual.cuenta]
-		actual.cuenta = actual.cuenta - 1
+		actual.cuenta -= 1
 		return actual, mediana, auxiliar
 
 	def __insertarEnHoja(self, actual, nuevo, derecha, indice):
@@ -97,7 +97,7 @@ class ArbolB(object):
 			posicion = posicion - 1
 		actual.nodos[indice + 1] = nuevo
 		actual.ramas[posicion + 1] = derecha
-		actual.cuenta = actual.cuenta + 1
+		actual.cuenta += 1
 		return actual
 
 	def eliminar(self, artista):
@@ -135,12 +135,12 @@ class ArbolB(object):
 			return encontrado, actual
 
 	def __remover(self, actual, indice):
-		indice = indice + 1
+		indice += 1
 		while (indice <= actual.cuenta):
 			actual.nodos[indice - 1] = actual.nodos[indice]
 			actual.ramas[indice - 1] = actual.ramas[indice]
-			indice = indice + 1
-		actual.cuenta = actual.cuenta - 1
+			indice += 1
+		actual.cuenta -= 1
 		return actual
 
 	def __porSucesor(self, actual, indice):
@@ -170,49 +170,49 @@ class ArbolB(object):
 		while(contador >= 1):
 			problema.nodos[contador + 1] = problema.nodos[contador]
 			problema.ramas[contador + 1] = problema.ramas[contador]
-			contador = contador - 1
-		problema.cuenta = problema.cuenta + 1
+			contador -= 1
+		problema.cuenta += 1
 		problema.ramas[1] = problema.ramas[0]
 		problema.nodos[1] = actual.nodos[indice]
 		actual.nodos[indice] = izquierda.nodos[izquierda.cuenta]
 		problema.ramas[0] = izquierda.ramas[izquierda.cuenta]
-		izquierda.cuenta = izquierda.cuenta - 1
+		izquierda.cuenta -= 1
 		return actual
 
 	def __moverIzquierda(self, actual, indice):
 		problema = actual.ramas[indice - 1]
 		derecha = actual.ramas[indice]
-		problema.cuenta = problema.cuenta + 1
+		problema.cuenta += 1
 		problema.nodos[problema.cuenta] = actual.nodos[indice]
 		problema.ramas[problema.cuenta] = derecha.ramas[0]
 		actual.nodos[indice] = derecha.nodos[1]
 		derecha.ramas[1] = derecha.ramas[0]
-		derecha.cuenta = derecha.cuenta - 1
+		derecha.cuenta -= 1
 		contador = 1
 		while (contador <= derecha.cuenta):
 			derecha.nodos[contador] = derecha.nodos[contador + 1]
 			derecha.ramas[contador] = derecha.ramas[contador + 1]
-			contador = contador + 1
+			contador += 1
 		return actual
 
 	def __combinar(self, padre, indice):
 		auxiliar = padre.ramas[indice]
 		izquierdo = padre.ramas[indice - 1]
-		izquierdo.cuenta = izquierdo.cuenta - 1
+		izquierdo.cuenta -= 1
 		izquierdo.nodos[izquierdo.cuenta] = padre.nodos[indice]
 		izquierdo.ramas[izquierdo.cuenta] = auxiliar.ramas[0]
 		contador = 1
 		while(contador <= auxiliar.cuenta):
-			izquierdo.cuenta = izquierdo.cuenta + 1
+			izquierdo.cuenta += 1
 			izquierdo.nodos[izquierdo.cuenta] = auxiliar.nodos[contador]
 			izquierdo.ramas[izquierdo.cuenta] = auxiliar.ramas[contador]
-			contador = contador + 1
+			contador += 1
 		contador = indice
 		while(contador <= padre.cuenta):
 			padre.nodos[contador] = padre.nodos[contador + 1]
 			padre.ramas[contador] = padre.ramas[contador + 1]
-			contador = contador + 1
-		padre.cuenta = padre.cuenta - 1
+			contador += 1
+		padre.cuenta -= 1
 
 	def graficar(self):
 		archivo = open('ArbolB.dot','w')
