@@ -1,3 +1,5 @@
+import subprocess
+
 class InfoCancion(object):
 	def __init__(self, nombre, path):
 		self.nombre = nombre
@@ -21,7 +23,7 @@ class ListaCanciones(object):
 	def __existe(self, info):
 		aux = self.inicio
 		for iterador in range(self.tamano):
-			if aux.info.nombre == info.nombre and aux.info.path == info.path:
+			if aux.info.path == info.path:
 				return True
 			aux = aux.siguiente
 		return False
@@ -42,14 +44,14 @@ class ListaCanciones(object):
 			nuevo.id = self.inicio.anterior.id + 1
 			self.inicio.anterior.siguiente = nuevo
 			self.inicio.anterior = nuevo
-		self.tamano = self.tamano + 1
+		self.tamano += 1
 		return True
 
-	def eliminar(self, nombre):
+	def eliminar(self, path):
 		aux = self.inicio
 		for iterador in range(self.tamano):
-			if aux.info.nombre == nombre:
-				self.tamano = self.tamano - 1
+			if aux.info.path == path:
+				self.tamano -= 1
 				if self.tamano == 1:
 					self.inicio	= None
 					return True
@@ -60,3 +62,18 @@ class ListaCanciones(object):
 				return True
 			aux = aux.siguiente
 		return False
+
+	def graficar(self):
+		file = open('ListaCircular.dot', 'w')
+		file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
+		nodo = self.inicio
+		contador = 0
+		while contador < self.tamano:
+			file.write("nodo" + str(nodo.id) + " [label = \"nombre: " + nodo.info.nombre + ", path: " + nodo.info.path + "\"];\n")
+			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.siguiente.id) + ";\n")
+			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.anterior.id) + ";\n")
+			nodo = nodo.siguiente
+			contador += 1
+		file.write("\n}")
+		file.close()
+		subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png"])

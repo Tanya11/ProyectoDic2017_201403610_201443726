@@ -10,35 +10,51 @@ class Usuario:
 	def __init__ (self, nombre, contrasena):
 		self.nombre = nombre
 		self.contrasena = contrasena
+		self.lista = None
 
 class ListaDoble:
 	def __init__(self):
 		self.cabeza = None
 
-	def insertar(self, nombre, contrasena):
-		auxiliar = NodoDoble(Usuario(nombre, contrasena))
-		auxiliar.siguiente = self.cabeza
-		if self.cabeza != None:
-			self.cabeza.anterior = auxiliar
-		self.cabeza = auxiliar
+	def __existe(self, nombre):
+		buscado = self.cabeza
+		while buscado != None:
+			if buscado.Usuario.nombre == nombre:
+				return True
+			buscado = buscado.siguiente
+		return False
 
-	def Buscar(self, nombre):
-		auxiliar = self.cabeza
-		while auxiliar != None and auxiliar.nombre != nombre:
-			auxiliar = auxiliar.siguiente
-		if auxiliar != None:
-			return auxiliar
-		print("No se encontro el usuario")
+	def insertar(self, nombre, contrasena):
+		if self.__existe(nombre):
+			return False
+		nuevo = NodoDoble(Usuario(nombre, contrasena))
+		nuevo.siguiente = self.cabeza
+		if self.cabeza != None:
+			self.cabeza.anterior = nuevo
+		self.cabeza = nuevo
+		return True
+
+	def __buscar(self, nombre):
+		buscado = self.cabeza
+		while buscado != None and buscado.Usuario.nombre != nombre:
+			buscado = buscado.siguiente
+		return buscado
+
+	def buscar(self, nombre, contrasena):
+		buscado = self.cabeza
+		while buscado != None and not (buscado.Usuario.nombre == nombre and buscado.Usuario.contrasena == contrasena):
+			buscado = buscado.siguiente
+		return buscado
 	
-	def Eliminar(self, nombre):
-		auxiliar = Buscar(nombre)
-		if auxiliar != None:
-			if auxiliar == self.cabeza:
-				self.cabeza = auxiliar.siguiente
-			if auxiliar.anterior != None:
-				auxiliar.anterior.siguiente = auxiliar.siguiente
-			if auxiliar.siguiente != None:
-				auxiliar.siguiente.anterior = auxiliar.anterior
+	def eliminar(self, nombre):
+		eliminado = __buscar(nombre)
+		if eliminado != None:
+			if eliminado == self.cabeza:
+				self.cabeza = eliminado.siguiente
+			if eliminado.anterior != None:
+				eliminado.anterior.siguiente = eliminado.siguiente
+			if eliminado.siguiente != None:
+				eliminado.siguiente.anterior = eliminado.anterior
   	
 	def GraficarListaDoble(self):
 		file = open('ListaDoble.dot', 'w')
@@ -59,9 +75,3 @@ class ListaDoble:
 		file.write("\n}")
 		file.close()
 		subprocess.call(["dot","ListaDoble.dot","-Tpng","-o","ListaDoble.png"])
-
-lista = ListaDoble()
-lista.insertar("Fernandito", "dEf")
-lista.insertar("Lester","123")
-lista.insertar("Tanya","algo")
-lista.GraficarListaDoble()

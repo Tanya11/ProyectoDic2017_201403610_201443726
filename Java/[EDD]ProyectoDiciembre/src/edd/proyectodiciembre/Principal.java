@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edd.proyectodiciembre;
 
 /**
@@ -12,9 +11,8 @@ package edd.proyectodiciembre;
  */
 public class Principal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Principal
-     */
+    private Conexion conexion;
+
     public Principal() {
         initComponents();
     }
@@ -47,6 +45,7 @@ public class Principal extends javax.swing.JFrame {
         jButton13 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jButton14 = new javax.swing.JButton();
+        jTextField4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
@@ -72,8 +71,8 @@ public class Principal extends javax.swing.JFrame {
         jTextField1.setBackground(new java.awt.Color(0, 0, 51));
         jTextField1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(0, 204, 0));
-        jTextField1.setText("Buscar");
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 130, 30));
+        jTextField1.setName("tex2"); // NOI18N
+        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 130, 30));
 
         jButton3.setBackground(new java.awt.Color(0, 0, 51));
         jButton3.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -81,13 +80,13 @@ public class Principal extends javax.swing.JFrame {
         jButton3.setText("Cargar Archivo");
         jButton3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton3.setName("CargarArchivo"); // NOI18N
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, 130, -1));
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, 130, -1));
 
         jComboBox1.setBackground(new java.awt.Color(0, 0, 51));
         jComboBox1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "GRAFICAR", "Matriz Dispersa", "Arbol B", "Arbol BB", "Lista Canciones", "Usuarios", "Canciones", "Cola Circular", " " }));
-        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 220, 120, 30));
+        getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, 120, 30));
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/play.jpg"))); // NOI18N
         jButton5.setName("pausa"); // NOI18N
@@ -103,38 +102,43 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, 60, 60));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/azul-marino.jpg"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 270, 500));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 500));
 
         jLabel3.setBackground(new java.awt.Color(51, 51, 51));
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gris.jpg"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 510, 980, 150));
 
         jButton8.setBackground(new java.awt.Color(51, 102, 255));
-        jButton8.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton8.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         jButton8.setForeground(new java.awt.Color(255, 255, 255));
-        jButton8.setText("ARTISTA");
+        jButton8.setText("ELIMINAR ARTISTA");
         jButton8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton8.setName("CargarArchivo"); // NOI18N
-        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 60, 90, 30));
+        jButton8.setName("EliminarArtista"); // NOI18N
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, 130, 30));
 
         jButton9.setBackground(new java.awt.Color(51, 102, 255));
-        jButton9.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton9.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         jButton9.setForeground(new java.awt.Color(255, 255, 255));
-        jButton9.setText("ALBUM");
+        jButton9.setText("ELIMINAR ARTISTAS");
         jButton9.setActionCommand("");
         jButton9.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton9.setName("Album"); // NOI18N
+        jButton9.setName("EliminarArtistas"); // NOI18N
         jButton9.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton9ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 80, 30));
+        getContentPane().add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 140, 30));
 
         jButton11.setBackground(new java.awt.Color(51, 102, 255));
-        jButton11.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton11.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         jButton11.setForeground(new java.awt.Color(255, 255, 255));
-        jButton11.setText("AÑO");
+        jButton11.setText("ELIMINAR ALBUM");
         jButton11.setActionCommand("");
         jButton11.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton11.setName("Ano"); // NOI18N
@@ -143,12 +147,12 @@ public class Principal extends javax.swing.JFrame {
                 jButton11ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 60, 70, 30));
+        getContentPane().add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 70, 140, 30));
 
         jButton10.setBackground(new java.awt.Color(51, 102, 255));
-        jButton10.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton10.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         jButton10.setForeground(new java.awt.Color(255, 255, 255));
-        jButton10.setText("ALBUM");
+        jButton10.setText("ELIMINAR AÑO");
         jButton10.setActionCommand("");
         jButton10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton10.setName("Album"); // NOI18N
@@ -157,12 +161,12 @@ public class Principal extends javax.swing.JFrame {
                 jButton10ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, 90, 30));
+        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 30, 120, 30));
 
         jButton12.setBackground(new java.awt.Color(51, 102, 255));
-        jButton12.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jButton12.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         jButton12.setForeground(new java.awt.Color(255, 255, 255));
-        jButton12.setText("COLA DE CANCIONES");
+        jButton12.setText("ELIMINAR CANCION");
         jButton12.setActionCommand("");
         jButton12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jButton12.setName("ColaCanciones"); // NOI18N
@@ -171,7 +175,7 @@ public class Principal extends javax.swing.JFrame {
                 jButton12ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 60, 160, 30));
+        getContentPane().add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 30, 160, 30));
 
         jButton13.setBackground(new java.awt.Color(0, 0, 204));
         jButton13.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
@@ -182,7 +186,7 @@ public class Principal extends javax.swing.JFrame {
                 jButton13ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 20, 140, 30));
+        getContentPane().add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 30, 130, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/azul.jpg"))); // NOI18N
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 10, 710, 500));
@@ -200,6 +204,12 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 60, 70, 30));
+
+        jTextField4.setBackground(new java.awt.Color(0, 0, 51));
+        jTextField4.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jTextField4.setForeground(new java.awt.Color(0, 204, 0));
+        jTextField4.setName("tex2"); // NOI18N
+        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 130, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -229,8 +239,13 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-      
+
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        //eliminar artista
+        //conexion.eliminar_artistas( jTextField1.getText(),jTextField4.getText());
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -287,5 +302,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 }
