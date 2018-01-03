@@ -113,14 +113,17 @@ def eliminar_artistas():
 @app.route('/eliminar_artista', methods=['POST'])
 def eliminar_artista():
 	artista = str(request.form['artista'])
-	####################################################Modificar esto
-	"""ab = repertorio.obtenerArtistas(ano, genero)
-	if ab == None:
-		return
-	else:
-		ab.artistas.eliminar(artista)
-		if ab.artistas.raiz.cuenta == 0:
-			repertorio.eliminar(ano, genero)"""
+	if repertorio.id != 1:
+		nodoFila = repertorio.inicio.abajo
+		nodoDato = None
+		while nodoFila != None:
+			nodoDato = nodoFila.derecha
+			while nodoDato != None:
+				nodoDato.artistas.eliminar(artista)
+				if nodoDato.artistas.raiz.cuenta == 0:
+					repertorio.eliminar(nodoDato.ano, nodoDato.genero)
+				nodoDato = nodoDato.derecha
+			nodoFila = nodoFila.abajo
 	return ""
 
 @app.route('/eliminar_album', methods=['POST'])
@@ -130,15 +133,11 @@ def eliminar_album():
 	artista = str(request.form['artista'])
 	album = str(request.form['album'])
 	ab = repertorio.obtenerArtistas(ano, genero)
-	if ab == None:
-		return
-	else:
+	if ab != None:
 		indice = 0
 		pagina = None
 		pagina, indice = ab.artistas.buscar(ab.raiz, artista, bandera)
-		if pagina == None:
-			return
-		else:
+		if pagina != None:
 			abb = pagina.nodos[indice].albumes
 			abb.eliminar(album)
 			if abb.nodo == None:
@@ -154,34 +153,82 @@ def eliminar_cancion():
 	artista = str(request.form['artista'])
 	album = str(request.form['album'])
 	nombre = str(request.form['nombre'])
-	####################################################Modificar esto tambien
-	"""
-	repertorio.eliminar(ano, genero)
 	ab = repertorio.obtenerArtistas(ano, genero)
-	if ab == None:
-		return
-	else:
+	if ab != None:
 		indice = 0
 		pagina = None
 		pagina, indice = ab.artistas.buscar(ab.raiz, artista, bandera)
-		if pagina == None:
-			return
-		else:
+		if pagina != None:
 			abb = pagina.nodos[indice].albumes
 			lc = abb.buscar(album)
-			if lc == None:
-				return
-			else:
-				lc.lista.eliminar(path)
+			if lc != None:
+				lc.lista.eliminar(nombre)
 				if lc.lista.inicio == None:
 					abb.eliminar(album)
 					if abb.nodo == None:
 						ab.artistas.eliminar(artista)
 						if ab.artistas.raiz.cuenta == 0:
-							repertorio.eliminar(ano, genero)"""
+							repertorio.eliminar(ano, genero)
 	return ""
 
-# OBTENER
+# GRAFICAR
+@app.route('/graficar_matriz', methods=['POST'])
+def graficar_matriz():
+	repertorio.graficar()
+	return ""
+
+@app.route('/graficar_arbol_b', methods=['POST'])
+def graficar_arbol_b():
+	ano = str(request.form['ano'])
+	genero = str(request.form['genero'])
+	ab = repertorio.obtenerArtistas(ano, genero)
+	if ab != None:
+		ab.artistas.graficar()
+	return ""
+
+@app.route('/graficar_abb', methods=['POST'])
+def graficar_abb():
+	ano = str(request.form['ano'])
+	genero = str(request.form['genero'])
+	artista = str(request.form['artista'])
+	ab = repertorio.obtenerArtistas(ano, genero)
+	if ab != None:
+		indice = 0
+		pagina = None
+		pagina, indice = ab.artistas.buscar(ab.raiz, artista, bandera)
+		if pagina != None:
+			pagina.nodos[indice].albumes.graficar()
+	return ""
+
+@app.route('/graficar_lista_circular', methods=['POST'])
+def graficar_lista_circular():
+	ano = str(request.form['ano'])
+	genero = str(request.form['genero'])
+	artista = str(request.form['artista'])
+	album = str(request.form['album'])
+	ab = repertorio.obtenerArtistas(ano, genero)
+	if ab != None:
+		indice = 0
+		pagina = None
+		pagina, indice = ab.artistas.buscar(ab.raiz, artista, bandera)
+		if pagina != None:
+			abb = pagina.nodos[indice].albumes
+			lc = abb.buscar(album)
+			if lc != None:
+				lc.lista.graficar()
+	return ""
+
+@app.route('/graficar_lista_doble', methods=['POST'])
+def graficar_lista_doble():
+	usuarios.graficar()
+	return ""
+
+@app.route('/graficar_lista_circular_usuario', methods=['POST'])
+def graficar_lista_circular_usuario():
+	if logueado != None:
+		if logueado.lista != None:
+			logueado.lista.graficar()
+	return ""
 
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0')

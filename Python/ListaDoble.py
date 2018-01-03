@@ -56,7 +56,7 @@ class ListaDoble:
 			if eliminado.siguiente != None:
 				eliminado.siguiente.anterior = eliminado.anterior
   	
-	def GraficarListaDoble(self):
+	def graficar(self):
 		file = open('ListaDoble.dot', 'w')
 		file.write("digraph ListaDoble{\n label=\"Lista Doble\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
 		nodito = self.cabeza
