@@ -18,9 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+   private Conexion conexion;
     public Login() {
         initComponents();
     }
@@ -58,6 +56,12 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 229, 28));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iniciarSesion.jpg"))); // NOI18N
+        jButton1.setName("IniciarSesion"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 229, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/spotify.jpg"))); // NOI18N
@@ -75,6 +79,11 @@ public class Login extends javax.swing.JFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/google.jpg"))); // NOI18N
         jButton3.setName("Google"); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 80, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.jpg"))); // NOI18N
@@ -84,44 +93,26 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        abrirArchivo();
+         // archivo
+        LeerArchivo leerarchivo = new LeerArchivo();
+        leerarchivo.Archivo();
  
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       //INICIAR SESION
+        if(jTextField1.getText()== null || jTextField2.getText()==null){
+            System.out.println("llene los dos campos");
+        }else{
+         conexion.ingresar(jTextField1.getText(), jTextField2.getText());
         }
-        //</editor-fold>
+       
+    }//GEN-LAST:event_jButton1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    Principal prin = new Principal();
+     prin.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -133,14 +124,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 
-private String abrirArchivo() {
-String aux="";   
-String  texto="";
-JFileChooser file=new JFileChooser();
-        file.showOpenDialog(this);
-        File abre=file.getSelectedFile();
-  return texto;//El texto se almacena en el JTextArea
 
-}
 
 }

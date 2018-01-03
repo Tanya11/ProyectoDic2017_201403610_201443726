@@ -40,18 +40,18 @@ class Matriz:
 		return auxiliar
 
 	def obtenerArtistas(self, ano, genero):
-		if self.__obtenerAno(ano) == None or self.__obtenerGenero(genero) == None:
-			return None
-		nodoAno = self.__obtenerAno(ano)
-		nodoGenero = self.__obtenerGenero(genero)
-		return __obtenerArtistas(nodoAno, nodoGenero)
+		if self.__obtenerAno(ano) != None and self.__obtenerGenero(genero) != None:
+			nodoAno = self.__obtenerAno(ano)
+			nodoGenero = self.__obtenerGenero(genero)
+			return self.__obtenerArtistas(nodoAno, nodoGenero)
+		return None
 
 	def insertar(self, ano, genero, artistas):
 		NodoFila = NodoMatriz(None)
 		NodoColumna = NodoMatriz(None)
 		NodoDato = NodoMatriz(artistas)
 		NodoFila.ano = ano
-		NodoFila.genero = genero
+		NodoColumna.genero = genero
 		NodoDato.id = self.id
 		self.id += 1
 		if self.inicio.abajo == None:
