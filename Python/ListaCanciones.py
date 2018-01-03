@@ -47,16 +47,17 @@ class ListaCanciones(object):
 		self.tamano += 1
 		return True
 
-	def eliminar(self, path):
+	def eliminar(self, nombre):
 		aux = self.inicio
 		for iterador in range(self.tamano):
-			if aux.info.path == path:
-				self.tamano -= 1
+			if aux.info.nombre == nombre:
 				if self.tamano == 1:
 					self.inicio	= None
+					self.tamano = 0
 					return True
 				elif self.inicio == aux:
 					self.inicio = aux.siguiente
+				self.tamano -= 1
 				aux.anterior.siguiente = aux.siguiente
 				aux.siguiente.anterior = aux.anterior
 				return True
