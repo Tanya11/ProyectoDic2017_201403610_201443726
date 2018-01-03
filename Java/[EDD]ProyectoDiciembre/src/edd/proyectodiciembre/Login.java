@@ -18,9 +18,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Login extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Login
-     */
+   private Conexion conexion;
     public Login() {
         initComponents();
     }
@@ -58,6 +56,12 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 229, 28));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iniciarSesion.jpg"))); // NOI18N
+        jButton1.setName("IniciarSesion"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 229, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/spotify.jpg"))); // NOI18N
@@ -75,6 +79,11 @@ public class Login extends javax.swing.JFrame {
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/google.jpg"))); // NOI18N
         jButton3.setName("Google"); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 80, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.jpg"))); // NOI18N
@@ -89,6 +98,21 @@ public class Login extends javax.swing.JFrame {
         leerarchivo.Archivo();
  
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       //INICIAR SESION
+        if(jTextField1.getText()== null || jTextField2.getText()==null){
+            System.out.println("llene los dos campos");
+        }else{
+         conexion.ingresar(jTextField1.getText(), jTextField2.getText());
+        }
+       
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    Principal prin = new Principal();
+     prin.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

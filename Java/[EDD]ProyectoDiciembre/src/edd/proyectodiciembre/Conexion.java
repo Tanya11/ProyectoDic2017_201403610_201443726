@@ -141,10 +141,8 @@ public class Conexion {
         }
     }
 
-    public void eliminar_artista(String ano, String genero, String artista) {
+    public void eliminar_artista(String artista) {
         rb = new FormEncodingBuilder()
-                .add("ano", ano)
-                .add("genero", genero)
                 .add("artista", artista)
                 .build();
         try {
@@ -185,14 +183,13 @@ public class Conexion {
         }
     }
 
-    public String eliminar_cancion(String ano, String genero, String artista, String album, String nombre, String path) {
+    public String eliminar_cancion(String ano, String genero, String artista, String album, String nombre) {
         rb = new FormEncodingBuilder()
                 .add("ano", ano)
                 .add("genero", genero)
                 .add("artista", artista)
                 .add("album", album)
                 .add("nombre", nombre)
-                .add("path", path)
                 .build();
         try {
             URL url = new URL("http://0.0.0.0:5000/eliminar_cancion");

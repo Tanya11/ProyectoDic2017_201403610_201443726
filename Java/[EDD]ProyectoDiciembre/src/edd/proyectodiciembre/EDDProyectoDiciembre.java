@@ -41,8 +41,8 @@ public class EDDProyectoDiciembre {
         //</editor-fold>
         Login log = new Login();
         log.setVisible(true);
-        //Principal prin = new Principal();
-        //prin.setVisible(true);
+//        Principal prin = new Principal();
+//        prin.setVisible(true);
     }
     
 }

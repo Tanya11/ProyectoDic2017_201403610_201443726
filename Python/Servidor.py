@@ -112,16 +112,15 @@ def eliminar_artistas():
 
 @app.route('/eliminar_artista', methods=['POST'])
 def eliminar_artista():
-	ano = str(request.form['ano'])
-	genero = str(request.form['genero'])
 	artista = str(request.form['artista'])
-	ab = repertorio.obtenerArtistas(ano, genero)
+	####################################################Modificar esto
+	"""ab = repertorio.obtenerArtistas(ano, genero)
 	if ab == None:
 		return
 	else:
 		ab.artistas.eliminar(artista)
 		if ab.artistas.raiz.cuenta == 0:
-			repertorio.eliminar(ano, genero)
+			repertorio.eliminar(ano, genero)"""
 	return ""
 
 @app.route('/eliminar_album', methods=['POST'])
@@ -155,7 +154,8 @@ def eliminar_cancion():
 	artista = str(request.form['artista'])
 	album = str(request.form['album'])
 	nombre = str(request.form['nombre'])
-	path = str(request.form['path'])
+	####################################################Modificar esto tambien
+	"""
 	repertorio.eliminar(ano, genero)
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab == None:
@@ -178,7 +178,7 @@ def eliminar_cancion():
 					if abb.nodo == None:
 						ab.artistas.eliminar(artista)
 						if ab.artistas.raiz.cuenta == 0:
-							repertorio.eliminar(ano, genero)
+							repertorio.eliminar(ano, genero)"""
 	return ""
 
 # OBTENER
