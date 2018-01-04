@@ -1,15 +1,17 @@
-import subprocess
+import subprocess, commands
 
 class NodoBinario(object):
 	def __init__(self, album, lista):
 		self.album = album
 		self.lista = lista
+		self.aidi = 0
 		self.izquierda = ArbolBinario()
 		self.derecha = ArbolBinario()
 
 class ArbolBinario(object):
 	def __init__(self):
 		self.nodo = None
+		self.contador = 0
 
 	def buscar(self, album):
 		if self.nodo == None:
@@ -22,9 +24,8 @@ class ArbolBinario(object):
 			return self.nodo.izquierda.buscar(album)
 
 	def insertar(self, album, lista):
-		nuevo = NodoBinario(album, lista)
 		if self.nodo == None:
-			self.nodo = nuevo
+			self.nodo = NodoBinario(album, lista)
 		elif self.nodo.album > album:
 			self.nodo.izquierda.insertar(album, lista)
 		elif self.nodo.album < album:
@@ -54,6 +55,7 @@ class ArbolBinario(object):
 				self.nodo.derecha.eliminar(album)
 
 	def graficar(self):
+		self.generarID(self.nodo, self.contador)
 		cadena = "digraph arbol {\n"
 		if(self.nodo != None):
 			cadena = self.__listar(self.nodo, cadena)
@@ -63,11 +65,21 @@ class ArbolBinario(object):
 		Archivo = open('ArbolBinario.dot', 'w')
 		Archivo.write(cadena)
 		Archivo.close()
-		subprocess.call(['dot', 'ArbolBinario.dot', '-o', 'ArbolBinario.png', '-Tpng', '-Gcharset=utf8']) 
+		subprocess.call(["dot","ArbolBinario.dot","-Tpng","-o","ArbolBinario.png", "-Gcharset=latin1"])
+
+	def generarID(self, nodo, contador):
+		if nodo != None:
+			nodo.aidi = contador
+			contador += 1
+			contador = nodo.izquierda.generarID(nodo.izquierda.nodo, contador)
+			contador = nodo.izquierda.generarID(nodo.derecha.nodo, contador)
+		return contador
 
 	def __listar(self, actual, cadena):
 		if(actual != None):
-			cadena += "n" + str("".join(actual.album.split("."))) + " [label = \"" + str(actual.album) + "\"];\n"
+			print actual.album
+			cadena += "n" + str(actual.aidi) + " [label = \"" + str(actual.album) + "\"];\n"
+			print actual.album.split(" ")
 			if(actual.izquierda != None and actual.derecha != None):
 				cadena = self.__listar(actual.izquierda.nodo, cadena)
 				cadena = self.__listar(actual.derecha.nodo, cadena)
@@ -80,9 +92,9 @@ class ArbolBinario(object):
 	def __enlazar(self, actual, cadena):
 		if(actual != None):
 			if(actual.derecha.nodo != None):
-				cadena += "n" + str("".join(actual.album.split("."))) + " -> n" + str("".join(actual.derecha.nodo.album.split("."))) + "[label = \"d\"];\n"
+				cadena += "n" + str(actual.aidi) + " -> n" + str(actual.derecha.nodo.aidi) + "[label = \"d\"];\n"
 				cadena = self.__enlazar(actual.derecha.nodo, cadena)
 			if(actual.izquierda.nodo != None):
-				cadena += "n" + str("".join(actual.album.split("."))) + " -> n" + str("".join(actual.izquierda.nodo.album.split("."))) + "[label = \"i\"];\n"
+				cadena += "n" + str(actual.aidi) + " -> n"+ str(actual.izquierda.nodo.aidi) + "[label = \"i\"];\n"
 				cadena = self.__enlazar(actual.izquierda.nodo, cadena)
 		return cadena

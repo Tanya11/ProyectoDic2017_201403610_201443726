@@ -1,3 +1,5 @@
+import subprocess, commands
+
 class NodoMatriz:
 	def __init__(self, artistas):
 		self.artistas = artistas
@@ -137,7 +139,7 @@ class Matriz:
 					auxiliar.abajo = NodoDato
 					NodoDato.arriba = auxiliar
 					break
-				elif auxiliar.artistas.lower() < NodoDato.artistas.lower():
+				elif auxiliar.ano.lower() < NodoDato.ano.lower():
 					auxiliar = auxiliar.abajo
 				else:
 					NodoDato.arriba = auxiliar.arriba
@@ -216,18 +218,18 @@ class Matriz:
 		while paraAbajo != None:
 			if y == 0:
 				Grafo_dot += "\n\t{\n\t\trank=min;"
-				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.id + "\", rankdir = LR]"
+				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.artistas + "\"]"
 			elif paraAbajo.abajo == None:
 				Grafo_dot += "\n\t{\n\t\trank=max;"
-				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.id + "\"]"
+				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.ano + "\"]"
 			else:	
 				Grafo_dot += "\n\t{\n\t\trank=same;"
-				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.id + "\"]"
+				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.ano + "\"]"
 			while paraDerecha != None:
 				if y == 0:
-					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.id + "\", rankdir = LR]"
+					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.genero + "\", rankdir = LR]"
 				else:
-					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.id + "\"]"
+					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"Arbol B (" + str(paraDerecha.id) + ")\"]"
 				paraDerecha = paraDerecha.derecha
 			Grafo_dot += "\n\t}"
 			y += 1
@@ -239,26 +241,22 @@ class Matriz:
 		paraDerecha = paraAbajo.derecha
 		while paraAbajo != None:
 			if paraAbajo.abajo != None:
-				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.abajo.id) + ";"
+				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.abajo.id) + " [rankdir = UD];"
 			if paraAbajo.arriba != None:
-				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.arriba.id) + ";"
+				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.arriba.id) + "[constraint=false];"
 			if paraAbajo.derecha != None:
 				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.derecha.id) + ";"
 			if paraAbajo.izquierda != None:
 				Grafo_dot += "\n\tNode" + str(paraAbajo.id) + " -> Node" + str(paraAbajo.izquierda.id) + ";"
 			while paraDerecha != None:
 				if paraDerecha.abajo != None:
-					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.abajo.id) + ";"
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.abajo.id) + " [rankdir = UD];"
 				if paraDerecha.arriba != None:
-					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.arriba.id) + ";"
+					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.arriba.id) + "[constraint=false];"
 				if paraDerecha.derecha != None:
 					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.derecha.id) + ";"
 				if paraDerecha.izquierda != None:
 					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.izquierda.id) + ";"
-				if paraDerecha.atras != None:
-					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.atras.id) + ";"
-				if paraDerecha.adelante != None:
-					Grafo_dot += "\n\tNode" + str(paraDerecha.id) + " -> Node" + str(paraDerecha.adelante.id) + ";"
 				paraDerecha = paraDerecha.derecha
 			paraAbajo = paraAbajo.abajo
 			if paraAbajo != None:
@@ -267,4 +265,4 @@ class Matriz:
 		Archivo = open('Matriz.dot', 'w') 
 		Archivo.write(Grafo_dot) 
 		Archivo.close() 
-		subprocess.call(['dot', 'Matriz.dot', '-o', 'Matriz.png', '-Tpng', '-Gcharset=utf8'])
+		subprocess.call(["dot","Matriz.dot","-Tpng","-o","Matriz.png", "-Gcharset=latin1"])

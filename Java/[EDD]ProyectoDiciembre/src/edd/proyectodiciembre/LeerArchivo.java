@@ -5,14 +5,14 @@
  */
 package edd.proyectodiciembre;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
+import org.jdom2.*;
 import org.jdom2.input.SAXBuilder;
 
 /**
@@ -20,10 +20,13 @@ import org.jdom2.input.SAXBuilder;
  * @author Usuario
  */
 public class LeerArchivo {
-    private String path;
 
-    public LeerArchivo() {
+    private String path;
+    private Conexion conexion;
+
+    public LeerArchivo(Conexion conexion) {
         path = "";
+        this.conexion = conexion;
     }
 
     public void Archivo() {
@@ -39,25 +42,28 @@ public class LeerArchivo {
 
     public void Leer(String path) {
         String anoAlbum, genero, nombreArtista, nombreAlbum, cadena, nombreCancion;
-
+        String nombreUser, contrasenaUser;
         if (path.length() == 0) {
             return;
         }
-        Conexion conexion = new Conexion();
         SAXBuilder builder = new SAXBuilder();
         File xmlFile = new File(path);
         try {
-            Document document = (Document) builder.build(xmlFile);
+            InputStream inputStream = new FileInputStream(xmlFile);
+            InputStreamReader reader = new InputStreamReader(inputStream, "ISO-8859-1");
+            Document document = (Document) builder.build(reader);
             Element rootNode = document.getRootElement();
             List<Element> listUsuarios = ((Element) rootNode.getChildren().get(0)).getChildren();
             List<Element> listArtistas = ((Element) rootNode.getChildren().get(1)).getChildren();
 
             for (Element Usuario : listUsuarios) {
                 System.out.println("\tNombre\t\tContraseña");
-                System.out.println("\t" + Usuario.getChildTextTrim("nombre") + "\t\t" + Usuario.getChildTextTrim("pass")); //nombre del artista 
-                System.out.println("---------------------------------------");
+                nombreUser = Usuario.getChildTextTrim("nombre");
+                contrasenaUser = Usuario.getChildTextTrim("pass");
+                System.out.println("\t" + nombreUser + "\t\t" + contrasenaUser); //nombre del artista 
                 //llamar a conexion para llenar lista de usuarios
-                conexion.insertar_usuario(Usuario.getChildTextTrim("nombre"), Usuario.getChildTextTrim("pass"));
+                conexion.insertar_usuario(nombreUser, contrasenaUser);
+                System.out.println("---------------------------------------");
             }
             for (Element artista : listArtistas) {
                 // System.out.println("\t" + artista.getChildTextTrim("nombre")); ////nombre del artista 
@@ -74,9 +80,11 @@ public class LeerArchivo {
                         nombreCancion = cancion.getChildTextTrim("nombre");
                         cadena = cancion.getChildTextTrim("path");
                         conexion.agregar_cancion(anoAlbum, genero, nombreArtista, nombreAlbum, nombreCancion, cadena);
+                        System.out.println(nombreCancion);
                     }
                 }
             }
+            JOptionPane.showMessageDialog(null, "Archivo leído.");
 
         } catch (IOException | JDOMException ex) {
             System.out.println(ex.getMessage());
