@@ -25,7 +25,7 @@ class ArbolB(object):
 			if esta:
 				return actual, indice
 			else:
-				return self.buscar(actual, artista, indice)
+				return self.buscar(actual.ramas[indice], artista, indice) 
 
 	def insertar(self, artista, albumes):
 		nuevo = NodoB.NodoB(artista, albumes)
@@ -217,21 +217,21 @@ class ArbolB(object):
 	def graficar(self):
 		archivo = open('ArbolB.dot','w')
 		archivo.write('digraph ArbolB{ \nnode[shape=record]\n')
-		self._genlazes(self.raiz)
+		self._gpaginas(self.raiz)
 		archivo.write(self.grafo + "\n")
 		self.grafo = ""
-		self._gpaginas(self.raiz)
+		self._genlazes(self.raiz)
 		archivo.write(self.grafo + "\n}")
 		self.grafo = ""
 		archivo.close()
-		commands.getoutput('dot -Tpng arbolb.dot -o arbolb.png')
+		subprocess.call(["dot","ArbolB.dot", "-Tpng", "-o", "ArbolB.png", "-Gcharset=latin1"])
 
 	def _genlazes(self, actual):
 		if actual != None:
 			index = 0
 			while index <= actual.cuenta:
 				if actual.ramas[index] != None:
-					self.grafo += 'node'+ actual.nodos[1].artista + ':D' + str(index) + '-> node' + actual.ramas[index].nodos[1].artista + '\n'
+					self.grafo += 'node'+ str("".join(actual.nodos[1].artista.split(" "))) + ':D' + str(index) + '-> node' + str("".join(actual.ramas[index].nodos[1].artista.split(" "))) + '\n'
 					self._genlazes(actual.ramas[index])
 				index += 1
 

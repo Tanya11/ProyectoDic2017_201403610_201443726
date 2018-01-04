@@ -13,11 +13,11 @@ class Pagina(object):
 	def graficar(self):
 		index = 0
 		identificador = 0
-		cadena  = 'node' + str(self.nodos[1].album) + '[label = \"<D0>'
+		cadena  = 'node' + str("".join(str(self.nodos[1].artista).split(" "))) + '[label = \"<D0>'
 		while index <= self.cuenta:
 			if self.nodos[index]!= None:
-				cadena += '|<F' + str(index-1) + '> album: ' + self.nodos[index].album + '|<D' + str(identificador)  + '>' 
+				cadena += '|<F' + str(index-1) + '> artista: ' + self.nodos[index].artista + '|<D' + str(identificador)  + '>' 
 			index += 1
-			identificador = identificador + 1
+			identificador += 1
 		cadena += '\"];\n'
 		return cadena 

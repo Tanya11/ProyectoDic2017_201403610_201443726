@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, commands
 
 class NodoDoble:
 	def __init__(self, Usuario):
@@ -62,7 +62,7 @@ class ListaDoble:
 		nodito = self.cabeza
 		contador = 0
 		while nodito != None:
-			file.write("nodo" + str(contador)+ "[label= \"" + str(nodito.Usuario.nombre) + "\"];\n")
+			file.write("nodo" + str(contador)+ "[label= \"" + str(nodito.Usuario.nombre) + ", " + str(nodito.Usuario.contrasena) + "\"];\n")
 			nodito = nodito.siguiente
 			contador += 1
 		contador = 0
@@ -74,4 +74,4 @@ class ListaDoble:
 			contador += 1
 		file.write("\n}")
 		file.close()
-		subprocess.call(["dot","ListaDoble.dot","-Tpng","-o","ListaDoble.png"])
+		subprocess.call(["dot","ListaDoble.dot","-Tpng","-o","ListaDoble.png", "-Gcharset=latin1"])

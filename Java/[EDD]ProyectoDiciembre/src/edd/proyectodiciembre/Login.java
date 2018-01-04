@@ -3,14 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edd.proyectodiciembre;
 
-import java.io.File;
-import java.io.IOException;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -18,9 +13,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class Login extends javax.swing.JFrame {
 
-   private Conexion conexion;
+    private final Conexion conexion;
+
     public Login() {
         initComponents();
+        conexion = new Conexion();
     }
 
     /**
@@ -33,11 +30,13 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -45,15 +44,9 @@ public class Login extends javax.swing.JFrame {
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jTextField1.setForeground(new java.awt.Color(153, 153, 153));
-        jTextField1.setText("Nombre o direccion de correo");
+        jTextField1.setToolTipText("");
         jTextField1.setName("nombre"); // NOI18N
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 229, 29));
-
-        jTextField2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(153, 153, 153));
-        jTextField2.setText("Contraseña");
-        jTextField2.setName("contrasena"); // NOI18N
-        getContentPane().add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 240, 229, 28));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iniciarSesion.jpg"))); // NOI18N
         jButton1.setName("IniciarSesion"); // NOI18N
@@ -65,7 +58,7 @@ public class Login extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 229, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/spotify.jpg"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 230, 65));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 80, 230, 70));
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jButton2.setText("LEER ARCHIVO");
@@ -85,33 +78,53 @@ public class Login extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 80, 30));
+        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 250, 230, 30));
+
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Nombre o  correo");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 170, -1, -1));
+
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("contraseña");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, -1, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/login.jpg"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 520));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 510));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         // archivo
-        LeerArchivo leerarchivo = new LeerArchivo();
+        // archivo
+        LeerArchivo leerarchivo = new LeerArchivo(conexion);
         leerarchivo.Archivo();
- 
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       //INICIAR SESION
-        if(jTextField1.getText()== null || jTextField2.getText()==null){
+        //INICIAR SESION
+        if (!(jTextField1.getText().length() > 0) || !(jPasswordField1.getPassword().length > 0)) {
             System.out.println("llene los dos campos");
-        }else{
-         conexion.ingresar(jTextField1.getText(), jTextField2.getText());
+        } else {
+            String contrasena = "";
+            for (int i = 0; i < jPasswordField1.getPassword().length; i++)
+                contrasena += jPasswordField1.getPassword()[i];
+            String resultado = conexion.ingresar(jTextField1.getText(), contrasena);
+            if(resultado == null){
+                JOptionPane.showMessageDialog(rootPane, "Ha ocurrido un error."); //este ni idea de cuándo pasa
+            }else if("Ingreso exitoso.".equals(resultado)){
+                
+                Principal prin = new Principal(conexion);
+                prin.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Credenciales incorrectas.");
+            }
         }
-       
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    Principal prin = new Principal();
-     prin.setVisible(true);
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -120,10 +133,10 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
-
 
 }
