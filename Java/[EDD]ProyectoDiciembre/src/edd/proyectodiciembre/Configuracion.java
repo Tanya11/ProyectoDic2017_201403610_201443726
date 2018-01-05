@@ -5,6 +5,9 @@
  */
 package edd.proyectodiciembre;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -217,7 +220,7 @@ public class Configuracion extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem11);
 
-        jMenuItem12.setText("Lista Doble");
+        jMenuItem12.setText("Lista Doble de Usuarios");
         jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem12ActionPerformed(evt);
@@ -225,7 +228,7 @@ public class Configuracion extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem12);
 
-        jMenuItem13.setText("Lista Circular Usuarios");
+        jMenuItem13.setText("Cola Circular Usuarios");
         jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem13ActionPerformed(evt);
@@ -398,12 +401,15 @@ public class Configuracion extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos o ke ze io");
                 }
                 break;
-            case "Graficar Matriz.":
-                conexion.graficar_matriz();
-                break;
             case "Graficar Arbol B.":
                 if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0) {
                     conexion.graficar_arbol_b(jTextField1.getText(), jTextField2.getText());
+                    try {
+                        Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ArbolB.png"));
+                    } catch (IOException ex) {
+                        System.out.println("Error " + ex.getMessage());
+                    }
+
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos o ke ze io");
                 }
@@ -411,6 +417,11 @@ public class Configuracion extends javax.swing.JFrame {
             case "Graficar Arbol Binario.":
                 if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0) {
                     conexion.graficar_abb(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
+                    try {
+                        Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ArbolBinario.png"));
+                    } catch (IOException ex) {
+                        System.out.println("Error " + ex.getMessage());
+                    }
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos");
                 }
@@ -418,6 +429,11 @@ public class Configuracion extends javax.swing.JFrame {
             case "Graficar Lista Circular.":
                 if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0) {
                     conexion.graficar_lista_circular(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText());
+                    try {
+                        Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaCircular.png"));
+                    } catch (IOException ex) {
+                        System.out.println("Error " + ex.getMessage());
+                    }
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos ");
                 }
@@ -477,16 +493,31 @@ public class Configuracion extends javax.swing.JFrame {
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         ocultar();
         conexion.graficar_lista_doble();
+        try {
+            Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaDoble.png"));
+        } catch (IOException ex) {
+            System.out.println("Error " + ex.getMessage());
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
         ocultar();
         conexion.graficar_lista_circular_usuario();
+        try {
+            Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaCircular.png"));
+        } catch (IOException ex) {
+            System.out.println("Error " + ex.getMessage());
+        }
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         ocultar();
         conexion.graficar_matriz();
+        try {
+            Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\Matriz.png"));
+        } catch (IOException ex) {
+            System.out.println("Error " + ex.getMessage());
+        }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

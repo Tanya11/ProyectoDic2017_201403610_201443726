@@ -255,5 +255,8 @@ def graficar_lista_circular_usuario():
 			logueado.lista.graficar()
 	return ""
 
+# OBTENER - REPRODUCIR
+#@app.route('', methods = ['POST'])
+
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0')
