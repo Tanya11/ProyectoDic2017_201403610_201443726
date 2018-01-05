@@ -34,7 +34,7 @@ def ingresar():
 # LOGOUT
 @app.route('/salir', methods = ['POST'])
 def salir():
-	txt = str(request.form['txt'])
+	txt = (request.form['txt']).encode('ISO-8859-1')
 	logueado = ListaDoble.Usuario("", "")
 	return ""
 
@@ -196,7 +196,7 @@ def eliminar_cancion():
 # GRAFICAR
 @app.route('/graficar_matriz', methods=['POST'])
 def graficar_matriz():
-	txt = str(request.form['txt'])
+	txt = (request.form['txt']).encode('ISO-8859-1')
 	repertorio.graficar()
 	return ""
 
@@ -243,20 +243,93 @@ def graficar_lista_circular():
 
 @app.route('/graficar_lista_doble', methods=['POST'])
 def graficar_lista_doble():
-	txt = str(request.form['txt'])
+	txt = (request.form['txt']).encode('ISO-8859-1')
 	usuarios.graficar()
 	return ""
 
 @app.route('/graficar_lista_circular_usuario', methods=['POST'])
 def graficar_lista_circular_usuario():
-	txt = str(request.form['txt'])
+	txt = (request.form['txt']).encode('ISO-8859-1')
 	if logueado.nombre != "":
 		if logueado.lista != None:
 			logueado.lista.graficar()
 	return ""
 
-# OBTENER - REPRODUCIR
-#@app.route('', methods = ['POST'])
+# OBTENER LISTA A REPRODUCIR
+@app.route('/canciones_artista', methods = ['POST'])
+def canciones_artista():
+	artista = (request.form['artista']).encode('ISO-8859-1')
+	texto = ""
+	nodo = repertorio.inicio.abajo
+	indice = 0
+	pagina = None
+	ab = None
+	while nodo != None:
+		ab = nodo.derecha
+		while ab != None:
+			pagina, indice = ab.artistas.buscar(ab.artistas.raiz, artista, indice)
+			if pagina != None:
+				abb = pagina.nodos[indice].albumes
+				texto += abb.obtenerLista(abb.nodo, texto)
+			indice = 0
+			pagina = None
+			ab = ab.derecha
+		nodo = nodo.abajo
+	return texto
 
+@app.route('/canciones_album', methods = ['POST'])
+def canciones_album():
+	ano = (request.form['ano']).encode('ISO-8859-1')
+	genero = (request.form['genero']).encode('ISO-8859-1')
+	artista = (request.form['artista']).encode('ISO-8859-1')
+	album = (request.form['album']).encode('ISO-8859-1')
+	ab = repertorio.obtenerArtistas(ano, genero)
+	if ab != None:
+		indice = 0
+		pagina = None
+		pagina, indice = ab.artistas.buscar(ab.artistas.raiz, artista, indice)
+		if pagina != None:
+			abb = pagina.nodos[indice].albumes
+			lc = abb.buscar(album)
+			if lc != None:
+				return lc.lista.obtenerLista()
+	return ""
+
+@app.route('/canciones_genero', methods = ['POST'])
+def canciones_genero():
+	genero = (request.form['genero']).encode('ISO-8859-1')
+	#Este codigo hace llorar a la ram :'v
+	"""ab = repertorio.obtenerGenero(genero)
+	genero = ""
+	if ab != None:
+		ab = ab.abajo
+		while ab != None:
+			genero += ab.artistas.obtenerLista(ab.artistas.raiz, genero)
+			ab = ab.abajo"""
+	return genero
+
+@app.route('/canciones_ano', methods = ['POST'])
+def canciones_ano():
+	ano = (request.form['ano']).encode('ISO-8859-1')
+	#Este codigo hace llorar a la ram :'v x2
+	"""ab = repertorio.obtenerAno(ano)
+	ano = ""
+	if ab != None:
+		ab = ab.derecha
+		while ab != None:
+			ano += ab.artistas.obtenerLista(ab.artistas.raiz, ano)
+			ab = ab.derecha"""
+	return ano
+
+@app.route('/canciones_usuario', methods = ['POST'])
+def canciones_usuario():
+	txt = (request.form['txt']).encode('ISO-8859-1')
+	txt = ""
+	if logueado != None:
+		if logueado.lista != None:
+			return logueado.lista.obtenerLista()
+	return txt
+
+#RUN DEL SERVER
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0')

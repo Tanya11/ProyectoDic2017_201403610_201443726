@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edd.proyectodiciembre;
 
+import javax.swing.*;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Random;
-import javax.swing.AbstractListModel;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,18 +10,41 @@ import javax.swing.JOptionPane;
  */
 public class Principal extends javax.swing.JFrame {
 
-    private final Conexion conexion;
-    private String[] seleccionado;
     private int canciones;
+    private String[] seleccionado;
+    private final Conexion conexion;
+    private final Reproductor Reproductor;
 
     public Principal(Conexion conexion) {
         initComponents();
+        ocultar();
         this.conexion = conexion;
         llenar();
+        Reproductor = new Reproductor();
+    }
+    
+    private void ocultar(){
+        anterior.setVisible(false);
         jTextField2.setVisible(false);
         jTextField3.setVisible(false);
         jTextField4.setVisible(false);
         jTextField5.setVisible(false);
+        jTextField2.setForeground(new Color(153, 153, 153));
+        jTextField3.setForeground(new Color(153, 153, 153));
+        jTextField4.setForeground(new Color(153, 153, 153));
+        jTextField5.setForeground(new Color(153, 153, 153));
+        jTextField2.setText("Año");
+        jTextField3.setText("Genero");
+        jTextField4.setText("Artista");
+        jTextField5.setText("Album");
+    }
+    
+    private void des_bloquear(boolean bloquear){
+        if(bloquear){
+            
+        }else{
+            
+        }
     }
 
     private void llenar() {
@@ -62,10 +78,10 @@ public class Principal extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        pausa = new javax.swing.JButton();
+        anterior = new javax.swing.JButton();
+        play = new javax.swing.JButton();
+        siguiente = new javax.swing.JButton();
         jButton12 = new javax.swing.JButton();
         jButton14 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -118,7 +134,7 @@ public class Principal extends javax.swing.JFrame {
         jComboBox1.setBackground(new java.awt.Color(0, 0, 51));
         jComboBox1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(255, 255, 255));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Elige uno...", "Todas las canciones de un artista", "Todas las canciones de un album", "Todas las canciones de un genero", "Todas las canciones de un año", "Todas las canciones de tu cola", "Shuffle play", " " }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Elige uno...", "Todas las canciones de un artista", "Todas las canciones de un album", "Todas las canciones de un genero", "Todas las canciones de un año", "Todas las canciones de tu cola", "Shuffle play" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -126,26 +142,26 @@ public class Principal extends javax.swing.JFrame {
         });
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 150, 30));
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/play.jpg"))); // NOI18N
-        jButton5.setEnabled(false);
-        jButton5.setName("pausa"); // NOI18N
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 540, 70, 60));
+        pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/play.jpg"))); // NOI18N
+        pausa.setEnabled(false);
+        pausa.setName("pausa"); // NOI18N
+        getContentPane().add(pausa, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 540, 70, 60));
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/atras.jpg"))); // NOI18N
-        jButton4.setEnabled(false);
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 540, 50, 60));
+        anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/atras.jpg"))); // NOI18N
+        anterior.setEnabled(false);
+        getContentPane().add(anterior, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 540, 50, 60));
 
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p.jpg"))); // NOI18N
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        play.setIcon(new javax.swing.ImageIcon(getClass().getResource("/p.jpg"))); // NOI18N
+        play.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                playActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, 60, 60));
+        getContentPane().add(play, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, 60, 60));
 
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/siguiente.jpg"))); // NOI18N
-        jButton7.setEnabled(false);
-        getContentPane().add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, 60, 60));
+        siguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/siguiente.jpg"))); // NOI18N
+        siguiente.setEnabled(false);
+        getContentPane().add(siguiente, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 540, 60, 60));
 
         jButton12.setBackground(new java.awt.Color(51, 102, 255));
         jButton12.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
@@ -253,16 +269,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        if (seleccionado.length > 0) {
+        if (seleccionado.length > 0)
             conexion.agregar_a_lista(seleccionado[4], seleccionado[5]);
-        } else {
+        else
             System.out.println("error");
-        }
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        conexion.Logout();
-        this.setVisible(false);
+        conexion.salir();
+        setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
@@ -270,94 +285,46 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jList1MouseClicked
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        javax.swing.JComboBox o = (javax.swing.JComboBox) evt.getSource();
-        String seleccion = o.getSelectedItem().toString();
+        ocultar();
+        String seleccion = ((javax.swing.JComboBox) evt.getSource()).getSelectedItem().toString();
         switch (seleccion) {
-            case "Elige uno...":
-                jTextField2.setVisible(false);
-                jTextField3.setVisible(false);
-                jTextField4.setVisible(false);
-                jTextField5.setVisible(false);
-                jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
-                break;
             case "Todas las canciones de un artista":
+                anterior.setVisible(true);
                 jTextField2.setVisible(true);
-                jTextField2.setForeground(new Color(153, 153, 153));
-                jTextField3.setVisible(false);
-                jTextField4.setVisible(false);
-                jTextField5.setVisible(false);
                 jTextField2.setText("Artista");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
                 break;
             case "Todas las canciones de un album":
+                anterior.setVisible(true);
                 jTextField2.setVisible(true);
                 jTextField3.setVisible(true);
                 jTextField4.setVisible(true);
                 jTextField5.setVisible(true);
-                jTextField2.setForeground(new Color(153, 153, 153));
-                jTextField3.setForeground(new Color(153, 153, 153));
-                jTextField4.setForeground(new Color(153, 153, 153));
-                jTextField5.setForeground(new Color(153, 153, 153));
-                jTextField2.setText("Año");
-                jTextField3.setText("Genero");
-                jTextField4.setText("Artista");
-                jTextField5.setText("Album");
                 break;
             case "Todas las canciones de un genero":
+                anterior.setVisible(true);
                 jTextField2.setVisible(true);
-                jTextField2.setForeground(new Color(153, 153, 153));
-                jTextField3.setVisible(false);
-                jTextField4.setVisible(false);
-                jTextField5.setVisible(false);
                 jTextField2.setText("Genero");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
                 break;
             case "Todas las canciones de un año":
                 jTextField2.setVisible(true);
-                jTextField2.setForeground(new Color(153, 153, 153));
-                jTextField3.setVisible(false);
-                jTextField4.setVisible(false);
-                jTextField5.setVisible(false);
                 jTextField2.setText("Año");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
+                anterior.setVisible(true);
                 break;
             case "Todas las canciones de tu cola":
-                jTextField2.setVisible(false);
-                jTextField3.setVisible(false);
-                jTextField4.setVisible(false);
-                jTextField5.setVisible(false);
-                jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
+                anterior.setVisible(true);
                 break;
-            case "Shuffle play":
-                jTextField2.setVisible(false);
-                jTextField3.setVisible(false);
-                jTextField4.setVisible(false);
-                jTextField5.setVisible(false);
-                jTextField2.setText("");
-                jTextField3.setText("");
-                jTextField4.setText("");
-                jTextField5.setText("");
+            default:
                 break;
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
         String modo, p1, p2, p3, p4, lista;
         modo = jComboBox1.getSelectedItem().toString();
         if (modo.equals("Elige uno...")) {
             JOptionPane.showMessageDialog(rootPane, "Elige un modo de reproducción.");
+        } else if(Reproductor.modo.equals(modo)){
+            Reproductor.reproducir();
         } else {
             lista = "";
             switch (modo) {
@@ -366,7 +333,7 @@ public class Principal extends javax.swing.JFrame {
                     if(p1.equals("Artista") || p1.length() == 0){
                         JOptionPane.showMessageDialog(rootPane, "Escriba el nombre del artista.");
                     }else{
-                        //lista = conexion.canciones_artista(p1);
+                        lista = conexion.canciones_artista(p1);
                     }
                     break;
                 case "Todas las canciones de un album":
@@ -377,7 +344,7 @@ public class Principal extends javax.swing.JFrame {
                     if((p1.equals("Año") || p1.length() == 0) && (p2.equals("Genero") || p2.length() == 0) && (p3.equals("Artista") || p3.length() == 0) && (p4.equals("Album") || p4.length() == 0)){
                         JOptionPane.showMessageDialog(rootPane, "Escriba todos los parámetros.");
                     }else{
-                        //lista = conexion.canciones_album(p1, p2, p3, p4);
+                        lista = conexion.canciones_album(p1, p2, p3, p4);
                     }
                     break;
                 case "Todas las canciones de un genero":
@@ -385,7 +352,7 @@ public class Principal extends javax.swing.JFrame {
                     if(p1.equals("Genero") || p1.length() == 0){
                         JOptionPane.showMessageDialog(rootPane, "Escriba el género.");
                     }else{
-                        //lista = conexion.canciones_genero(p1);
+                        lista = conexion.canciones_genero(p1);
                     }
                     break;
                 case "Todas las canciones de un año":
@@ -393,34 +360,38 @@ public class Principal extends javax.swing.JFrame {
                     if(p1.equals("Año") || p1.length() == 0){
                         JOptionPane.showMessageDialog(rootPane, "Escriba el año.");
                     }else{
-                        //lista = conexion.canciones_ano(p1);
+                        lista = conexion.canciones_ano(p1);
                     }
                     break;
                 case "Todas las canciones de tu cola":
-                    //lista = conexion.canciones_usuario(p1);
+                    lista = conexion.canciones_usuario();
                     break;
                 case "Shuffle play":
                     int aleatorio = 0;
+                    String[] atributos;
                     for(int i = 0; i < canciones; i++){
                         aleatorio = (int) (Math.random() * canciones);
-                        //lista += jList1.get "\n";
+                        atributos = (jList1.getModel().getElementAt(aleatorio).toString().split(" -> ")[1]).split(" ---- ");
+                        lista += atributos[4] + " ---- " + atributos[5] + "\n";
                     }
                     break;
             }
-            /* nombrecancion ---- path
-             * nombrecancion ---- path
-             */
-            if(lista.length() > 0){
+            if(lista == null){
+                System.out.println("Error: No se ha podido obtener la lista.");
+            } else if(lista.length() > 0){
+                Reproductor.modo = modo;
                 ArrayList<Cancion> actual = new ArrayList<>();
                 String[] lineas = lista.split("\n");
-                String[] atributos = new String[2];
-                for(String linea: lineas)
+                String[] atributos;
+                for(String linea: lineas){
                     atributos = linea.split(" ---- ");
                     actual.add(new Cancion(atributos[0], atributos[1], "", "", "", ""));
-                //Reproductor.reproducir(actual)
+                }
+                //Reproductor.reproducir(actual); //Descomentar cuando ya hayan canciones
+                System.out.println("Listo");
             }
         }
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }//GEN-LAST:event_playActionPerformed
 
     private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
         ((javax.swing.JTextField) evt.getSource()).setText("");
@@ -443,15 +414,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton anterior;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -465,5 +433,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JButton pausa;
+    private javax.swing.JButton play;
+    private javax.swing.JButton siguiente;
     // End of variables declaration//GEN-END:variables
 }

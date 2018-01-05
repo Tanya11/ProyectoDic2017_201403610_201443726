@@ -1,16 +1,9 @@
 package edd.proyectodiciembre;
 
-import com.squareup.okhttp.FormEncodingBuilder;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
-import com.squareup.okhttp.Response;
+import java.net.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.squareup.okhttp.*;
 
 /**
  *
@@ -27,7 +20,7 @@ public class Conexion {
         this.actual = new ArrayList<>();
     }
 
-    public String ingresar(String nombre, String contrasena) { ////////////////////LOGIN
+    public String ingresar(String nombre, String contrasena) {
         rb = new FormEncodingBuilder()
                 .add("nombre", nombre)
                 .add("contrasena", contrasena)
@@ -40,12 +33,12 @@ public class Conexion {
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.toString());
         }
         return null;
     }
 
-    public void Logout() { ////////////////////////////////////// LOGOUT
+    public void salir() {
         rb = new FormEncodingBuilder()
                 .add("txt", "")
                 .build();
@@ -60,7 +53,9 @@ public class Conexion {
         }
     }
 
-    public void insertar_usuario(String nombre, String contrasena) { //recibe nobmre y contraseña: AGREGAR USUARIO
+    public void insertar_usuario(String nombre, String contrasena) {
+        System.out.println("\tNombre\t\tContraseña");
+        System.out.println("\t" + nombre + "\t\t" + contrasena);
         rb = new FormEncodingBuilder()
                 .add("nombre", nombre)
                 .add("contrasena", contrasena)
@@ -69,9 +64,8 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/insertar_usuario");
             Request request = new Request.Builder().url(url).post(rb).build();
             Response respuesta = webClient.newCall(request).execute();
-            if(!respuesta.body().string().equals("Usuario creado.")){
+            if(!respuesta.body().string().equals("Usuario creado."))
                 System.out.println("Nombre de usuario \"" + nombre + "\" ya en uso.");
-            }
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -98,6 +92,7 @@ public class Conexion {
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
+        System.out.println(nombre);
     }
 
     public void agregar_a_lista(String nombre, String path) {
@@ -276,7 +271,7 @@ public class Conexion {
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-    }//
+    }
 
     public void graficar_lista_circular(String ano, String genero, String artista, String album) {
         rb = new FormEncodingBuilder()
@@ -309,7 +304,7 @@ public class Conexion {
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-    }//graficar_lista_circular_usuario
+    }
 
     public void graficar_lista_circular_usuario() {
         rb = new FormEncodingBuilder()
@@ -324,5 +319,93 @@ public class Conexion {
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
+    }
+    
+    public String canciones_artista(String artista){
+        rb = new FormEncodingBuilder()
+                .add("artista", artista)
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/canciones_artista");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+    
+    public String canciones_album(String ano, String genero, String artista, String album){
+        rb = new FormEncodingBuilder()
+                .add("ano", ano)
+                .add("genero", genero)
+                .add("artista", artista)
+                .add("album", album)
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/canciones_album");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+    
+    public String canciones_genero(String genero){
+        rb = new FormEncodingBuilder()
+                .add("genero", genero)
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/canciones_genero");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+    
+    public String canciones_ano(String ano){
+        rb = new FormEncodingBuilder()
+                .add("ano", ano)
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/canciones_ano");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
+    }
+    
+    public String canciones_usuario(){
+        rb = new FormEncodingBuilder()
+                .add("txt", "")
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/canciones_usuario");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
     }
 }

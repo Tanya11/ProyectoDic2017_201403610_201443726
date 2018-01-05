@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edd.proyectodiciembre;
 
+import java.io.*;
 import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,7 +10,7 @@ import javax.swing.JOptionPane;
  */
 public class Configuracion extends javax.swing.JFrame {
 
-    private Conexion conexion;
+    private final Conexion conexion;
 
     public Configuracion(Conexion conexion) {
         initComponents();
@@ -353,90 +347,79 @@ public class Configuracion extends javax.swing.JFrame {
         String seleccion = ((javax.swing.JButton) evt.getSource()).getText();
         switch (seleccion) {
             case "Eliminar usuario.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0)
                     conexion.eliminar_usuario(jTextField1.getText(), jTextField2.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese ambos campos o ke ze io");
-                }
+                else 
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese ambos campos.");
                 break;
             case "Eliminar año.":
-                if (jTextField1.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0) 
                     conexion.eliminar_ano(jTextField1.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese el año o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese el año.");
                 break;
             case "Eliminar genero.":
-                if (jTextField1.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0)
                     conexion.eliminar_genero(jTextField1.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese el genero o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese el genero.");
                 break;
             case "Eliminar artistas.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0)
                     conexion.eliminar_artistas(jTextField1.getText(), jTextField2.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Eliminar artista.":
-                if (jTextField1.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0)
                     conexion.eliminar_artista(jTextField1.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese el artista o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese el artista.");
                 break;
             case "Eliminar album.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0)
                     conexion.eliminar_album(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Eliminar canción.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0 && jTextField5.getText().length() > 0) {
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0 && jTextField5.getText().length() > 0)
                     conexion.eliminar_cancion(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), jTextField5.getText());
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Graficar Arbol B.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0) {
-                    conexion.graficar_arbol_b(jTextField1.getText(), jTextField2.getText());
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0)
                     try {
+                        conexion.graficar_arbol_b(jTextField1.getText(), jTextField2.getText());
                         Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ArbolB.png"));
                     } catch (IOException ex) {
-                        System.out.println("Error " + ex.getMessage());
+                        System.out.println("Error: " + ex.getMessage());
                     }
-
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos o ke ze io");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Graficar Arbol Binario.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0) {
-                    conexion.graficar_abb(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0)
                     try {
+                        conexion.graficar_abb(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
                         Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ArbolBinario.png"));
                     } catch (IOException ex) {
-                        System.out.println("Error " + ex.getMessage());
+                        System.out.println("Error: " + ex.getMessage());
                     }
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Graficar Lista Circular.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0) {
-                    conexion.graficar_lista_circular(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText());
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0) 
                     try {
+                        conexion.graficar_lista_circular(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText());
                         Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaCircular.png"));
                     } catch (IOException ex) {
-                        System.out.println("Error " + ex.getMessage());
+                        System.out.println("Error: " + ex.getMessage());
                     }
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos ");
-                }
+                else
+                    JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             default:
                 JOptionPane.showMessageDialog(rootPane, "Error extraño...");
@@ -457,7 +440,6 @@ public class Configuracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        //abb
         ocultar();
         jLabel1.setText("Año:");
         jLabel2.setText("Genero:");
@@ -496,7 +478,7 @@ public class Configuracion extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaDoble.png"));
         } catch (IOException ex) {
-            System.out.println("Error " + ex.getMessage());
+            System.out.println("Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
@@ -506,7 +488,7 @@ public class Configuracion extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaCircular.png"));
         } catch (IOException ex) {
-            System.out.println("Error " + ex.getMessage());
+            System.out.println("Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
@@ -516,7 +498,7 @@ public class Configuracion extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\Matriz.png"));
         } catch (IOException ex) {
-            System.out.println("Error " + ex.getMessage());
+            System.out.println("Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 

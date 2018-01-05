@@ -65,6 +65,17 @@ class ListaCanciones(object):
 			aux = aux.siguiente
 		return False
 
+	def obtenerLista(self):
+		nodo = self.inicio
+		contador = 0
+		texto = ""
+		while contador < self.tamano:
+			texto += nodo.info.nombre + " ---- " + nodo.info.path + "\n"
+			print nodo.info.nombre + ", " + str(contador)
+			nodo = nodo.siguiente
+			contador += 1
+		return texto
+
 	def graficar(self):
 		file = open('ListaCircular.dot', 'w')
 		file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
@@ -79,5 +90,3 @@ class ListaCanciones(object):
 		file.write("\n}")
 		file.close()
 		subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png", "-Gcharset=latin1"])
-		
-

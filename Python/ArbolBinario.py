@@ -98,3 +98,10 @@ class ArbolBinario(object):
 				cadena += "n" + str(actual.aidi) + " -> n"+ str(actual.izquierda.nodo.aidi) + "[label = \"i\"];\n"
 				cadena = self.__enlazar(actual.izquierda.nodo, cadena)
 		return cadena
+
+	def obtenerLista(self, nodo, texto):
+		if nodo != None:
+			texto += nodo.izquierda.obtenerLista(nodo.izquierda.nodo, texto)
+			texto += nodo.lista.obtenerLista()
+			texto += nodo.derecha.obtenerLista(nodo.derecha.nodo, texto)
+		return texto
