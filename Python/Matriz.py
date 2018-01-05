@@ -17,7 +17,7 @@ class Matriz:
 		self.inicio.id = 0
 		self.id = 1
 
-	def __obtenerGenero(self, genero):
+	def obtenerGenero(self, genero):
 		auxiliar = self.inicio.derecha
 		while auxiliar != None:
 			if auxiliar.genero == genero:
@@ -25,7 +25,7 @@ class Matriz:
 			auxiliar = auxiliar.derecha
 		return auxiliar
 
-	def __obtenerAno(self, ano):
+	def obtenerAno(self, ano):
 		auxiliar = self.inicio.abajo
 		while auxiliar != None:
 			if auxiliar.ano == ano:
@@ -42,9 +42,9 @@ class Matriz:
 		return auxiliar
 
 	def obtenerArtistas(self, ano, genero):
-		if self.__obtenerAno(ano) != None and self.__obtenerGenero(genero) != None:
-			nodoAno = self.__obtenerAno(ano)
-			nodoGenero = self.__obtenerGenero(genero)
+		if self.obtenerAno(ano) != None and self.obtenerGenero(genero) != None:
+			nodoAno = self.obtenerAno(ano)
+			nodoGenero = self.obtenerGenero(genero)
 			return self.__obtenerArtistas(nodoAno, nodoGenero)
 		return None
 
@@ -174,9 +174,9 @@ class Matriz:
 					break
 
 	def eliminar(self, ano, genero):
-		if self.__obtenerAno(ano) != None and self.__obtenerGenero(genero) != None:
-			NodoGenero = self.__obtenerGenero(genero)
-			NodoAno = self.__obtenerAno(ano)
+		if self.obtenerAno(ano) != None and self.obtenerGenero(genero) != None:
+			NodoGenero = self.obtenerGenero(genero)
+			NodoAno = self.obtenerAno(ano)
 			NodoDato = self.__obtenerArtistas(NodoAno, NodoGenero)
 			if NodoDato != None:
 				NodoDato.izquierda.derecha = NodoDato.derecha

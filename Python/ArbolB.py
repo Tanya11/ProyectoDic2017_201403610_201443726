@@ -243,3 +243,13 @@ class ArbolB(object):
 				if actual.ramas[index]!= None:
 					self._gpaginas(actual.ramas[index])
 				index += 1
+
+	def obtenerLista(self, pagina, texto):
+		if pagina != None:
+			indice = 0
+			while indice <= pagina.cuenta:
+				texto += self.obtenerLista(pagina.ramas[indice], texto)
+				if pagina.nodos[indice] != None:
+					texto += pagina.nodos[indice].albumes.obtenerLista(pagina.nodos[indice].albumes.nodo, texto)
+				indice += 1
+		return texto
