@@ -5,6 +5,11 @@
  */
 package edd.proyectodiciembre;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -107,16 +112,20 @@ public class Login extends javax.swing.JFrame {
             System.out.println("llene los dos campos");
         } else {
             String contrasena = "";
-            for (int i = 0; i < jPasswordField1.getPassword().length; i++)
+            for (int i = 0; i < jPasswordField1.getPassword().length; i++) {
                 contrasena += jPasswordField1.getPassword()[i];
+            }
             String resultado = conexion.ingresar(jTextField1.getText(), contrasena);
-            if(resultado == null){
+            jTextField1.setText("");
+            jPasswordField1.setText("");
+            if (resultado == null) {
                 JOptionPane.showMessageDialog(rootPane, "Ha ocurrido un error."); //este ni idea de cuándo pasa
-            }else if("Ingreso exitoso.".equals(resultado)){
-                
+       
+            } else if ("Ingreso exitoso.".equals(resultado)) {
+
                 Principal prin = new Principal(conexion);
                 prin.setVisible(true);
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(rootPane, "Credenciales incorrectas.");
             }
         }
@@ -124,7 +133,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

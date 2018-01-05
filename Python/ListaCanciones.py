@@ -1,5 +1,6 @@
 import subprocess, commands
 
+
 class InfoCancion(object):
 	def __init__(self, nombre, path):
 		self.nombre = nombre
@@ -78,3 +79,5 @@ class ListaCanciones(object):
 		file.write("\n}")
 		file.close()
 		subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png", "-Gcharset=latin1"])
+		
+
