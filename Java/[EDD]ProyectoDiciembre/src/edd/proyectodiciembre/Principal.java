@@ -39,33 +39,17 @@ public class Principal extends javax.swing.JFrame {
         jTextField5.setText("Album");
     }
     
-    private void des_bloquear(boolean bloquear){
-        if(bloquear){
-            
-        }else{
-            
-        }
-    }
-
     private void llenar() {
         canciones = 0;
         String Linea[] = new String[conexion.actual.size()];
-        for (Cancion actual : conexion.actual) {
-            Linea[canciones] = canciones + " -> " + actual.getArtista() + " ---- " + actual.getAlbum() + " ---- " + actual.getAno() + " ---- " + actual.getGenero() + " ---- " + actual.getNombre() + " ---- " + actual.getPath();
-            canciones += 1;
-        }
+        for (Cancion actual : conexion.actual)
+            Linea[canciones++] = canciones + " -> " + actual.getArtista() + " ---- " + actual.getAlbum() + " ---- " + actual.getAno() + " ---- " + actual.getGenero() + " ---- " + actual.getNombre() + " ---- " + actual.getPath();
         jList1.setModel(new AbstractListModel() {
             String[] Lineas = Linea;
-
             @Override
-            public int getSize() {
-                return Lineas.length;
-            }
-
+            public int getSize() { return Lineas.length; }
             @Override
-            public Object getElementAt(int index) {
-                return Lineas[index];
-            }
+            public Object getElementAt(int index) { return Lineas[index]; }
         });
     }
 
@@ -145,6 +129,11 @@ public class Principal extends javax.swing.JFrame {
         pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/play.jpg"))); // NOI18N
         pausa.setEnabled(false);
         pausa.setName("pausa"); // NOI18N
+        pausa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pausaActionPerformed(evt);
+            }
+        });
         getContentPane().add(pausa, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 540, 70, 60));
 
         anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/atras.jpg"))); // NOI18N
@@ -319,6 +308,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
+        pausa.setEnabled(true);
+        anterior.setEnabled(true);
+        siguiente.setEnabled(true);
+        play.setEnabled(false);
         String modo, p1, p2, p3, p4, lista;
         modo = jComboBox1.getSelectedItem().toString();
         if (modo.equals("Elige uno...")) {
@@ -387,7 +380,7 @@ public class Principal extends javax.swing.JFrame {
                     atributos = linea.split(" ---- ");
                     actual.add(new Cancion(atributos[0], atributos[1], "", "", "", ""));
                 }
-                //Reproductor.reproducir(actual); //Descomentar cuando ya hayan canciones
+                //Reproductor.reproducir(actual); //Descomentar cuando ya hayan canciones en la carpeta
                 System.out.println("Listo");
             }
         }
@@ -412,6 +405,11 @@ public class Principal extends javax.swing.JFrame {
         ((javax.swing.JTextField) evt.getSource()).setText("");
         ((javax.swing.JTextField) evt.getSource()).setForeground(Color.black);
     }//GEN-LAST:event_jTextField3MouseClicked
+
+    private void pausaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaActionPerformed
+        play.setEnabled(true);
+        pausa.setEnabled(false);
+    }//GEN-LAST:event_pausaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anterior;
