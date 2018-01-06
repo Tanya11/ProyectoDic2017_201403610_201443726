@@ -1,7 +1,6 @@
 package edd.proyectodiciembre;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
@@ -35,9 +34,9 @@ public class Reproductor {
     
     private void cambiar(int i){
         posicion += i;
-        if(posicion == -1)
+        if(posicion < 0)
             posicion = lista.size() - 1;
-        else if(posicion == lista.size())
+        else if(posicion >= lista.size())
             posicion = 0;
         actual = lista.get(posicion);
     }
@@ -52,9 +51,7 @@ public class Reproductor {
                         reproductor.play();
                         cambiar(1);
                         reproducir();
-                    } catch (FileNotFoundException | JavaLayerException e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
+                    } catch (FileNotFoundException | JavaLayerException e) {}
                 }
             };
             HiloPlay.start();
@@ -62,9 +59,7 @@ public class Reproductor {
             try {
                 HiloPlay.resume();
                 is_play = true;
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
+            } catch (Exception e) {}
         }
     }
 
@@ -73,23 +68,19 @@ public class Reproductor {
             HiloPlay.stop();
             reproductor.close();
             is_play = false;
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        } catch (Exception e) {}
     }
 
     public void pausar() {
         try {
             HiloPlay.suspend();
             is_play = false;
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        } catch (Exception e) {}
     }
 
     public void siguiente() {
         detener();
-        cambiar(1);
+        cambiar(+1);
         is_play = true;
         reproducir();
     }

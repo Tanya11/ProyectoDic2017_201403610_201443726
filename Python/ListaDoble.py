@@ -47,7 +47,7 @@ class ListaDoble:
 		return buscado
 	
 	def eliminar(self, nombre):
-		eliminado = __buscar(nombre)
+		eliminado = self.__buscar(nombre)
 		if eliminado != None:
 			if eliminado == self.cabeza:
 				self.cabeza = eliminado.siguiente

@@ -112,7 +112,6 @@ class ArbolB(object):
 			if raiz_.estaVacia():
 				raiz_ = raiz_.ramas[0]
 		else:
-			print "No existe el artista."
 			raiz_ = self.raiz
 		return raiz_
 
@@ -248,7 +247,7 @@ class ArbolB(object):
 		if pagina != None:
 			indice = 0
 			while indice <= pagina.cuenta:
-				texto += self.obtenerLista(pagina.ramas[indice], texto)
+				texto = self.obtenerLista(pagina.ramas[indice], texto)
 				if pagina.nodos[indice] != None:
 					texto += pagina.nodos[indice].albumes.obtenerLista(pagina.nodos[indice].albumes.nodo, texto)
 				indice += 1

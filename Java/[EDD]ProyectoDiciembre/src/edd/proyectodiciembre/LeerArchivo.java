@@ -46,8 +46,7 @@ public class LeerArchivo {
             List<Element> listUsuarios = ((Element) rootNode.getChildren().get(0)).getChildren();
             List<Element> listArtistas = ((Element) rootNode.getChildren().get(1)).getChildren();
             for (Element Usuario : listUsuarios) {
-                //llamar a conexion para llenar lista de usuarios
-                conexion.insertar_usuario(Usuario.getChildTextTrim("nombre"), Usuario.getChildTextTrim("pass"));
+                conexion.insertar_usuario(Usuario.getChildTextTrim("nombre").replace("&amp;", "&"), Usuario.getChildTextTrim("pass").replace("&amp;", "&"));
                 System.out.println("---------------------------------------");
             }
             for (Element artista : listArtistas) {
@@ -59,7 +58,7 @@ public class LeerArchivo {
                     ano = album.getChildTextTrim("año");
                     List<Element> canciones = ((Element) album.getChildren().get(3)).getChildren();
                     for (Element cancion : canciones)
-                        conexion.agregar_cancion(ano, genero, nombreArtista, nombreAlbum, cancion.getChildTextTrim("nombre"), cancion.getChildTextTrim("path"));
+                        conexion.agregar_cancion(ano.replace("&amp;", "&"), genero.replace("&amp;", "&"), nombreArtista.replace("&amp;", "&"), nombreAlbum.replace("&amp;", "&"), cancion.getChildTextTrim("nombre").replace("&amp;", "&"), cancion.getChildTextTrim("path").replace("&amp;", "&"));
                 }
             }
             JOptionPane.showMessageDialog(null, "Archivo leído.");

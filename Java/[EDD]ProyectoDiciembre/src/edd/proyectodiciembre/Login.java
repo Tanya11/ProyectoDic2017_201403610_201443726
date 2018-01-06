@@ -33,7 +33,6 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(153, 153, 153));
         jTextField1.setToolTipText("");
         jTextField1.setName("nombre"); // NOI18N
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 190, 229, 29));
@@ -101,9 +100,9 @@ public class Login extends javax.swing.JFrame {
             jPasswordField1.setText("");
             if (resultado == null)
                 JOptionPane.showMessageDialog(rootPane, "Ha ocurrido un error.");
-            else if ("Ingreso exitoso.".equals(resultado))
-                (new Principal(conexion)).setVisible(true);
-            else
+            else if ("Ingreso exitoso.".equals(resultado)){
+                (new Principal(conexion, jTextField1.getText(), contrasena)).setVisible(true);
+            }else
                 JOptionPane.showMessageDialog(rootPane, "Credenciales incorrectas.");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
