@@ -5,6 +5,7 @@ class InfoCancion(object):
 	def __init__(self, nombre, path):
 		self.nombre = nombre
 		self.path = path
+		print nombre
 
 class NodoCancion(object):
 	def __init__(self, anterior, info, siguiente):
@@ -21,14 +22,6 @@ class ListaCanciones(object):
 	def estaVacia(self):
 		return (False, True)[self.tamano == 0]
 
-	def __existe(self, info):
-		aux = self.inicio
-		for iterador in range(self.tamano):
-			if aux.info.path == info.path:
-				return True
-			aux = aux.siguiente
-		return False
-
 	def insertar(self, nombre, path):
 		nuevo = None
 		info = InfoCancion(nombre, path)
@@ -38,14 +31,13 @@ class ListaCanciones(object):
 			nuevo.anterior = nuevo
 			nuevo.id = 0
 			self.inicio = nuevo
-		elif self.__existe(info):
-			return False
+			self.tamano = 1
 		else:
 			nuevo = NodoCancion(self.inicio.anterior, info, self.inicio)
 			nuevo.id = self.inicio.anterior.id + 1
 			self.inicio.anterior.siguiente = nuevo
 			self.inicio.anterior = nuevo
-		self.tamano += 1
+			self.tamano += 1
 		return True
 
 	def eliminar(self, nombre):
@@ -65,28 +57,34 @@ class ListaCanciones(object):
 			aux = aux.siguiente
 		return False
 
+	def graficar(self, cola):
+		if cola:
+			file = open('ColaCircular.dot', 'w')
+		else:
+			file = open('ListaCircular.dot', 'w')
+		file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
+		nodo = self.inicio
+		contador = 0
+		while contador < self.tamano:
+			file.write("nodo" + str(nodo.id) + " [label = \"cancion: " + nodo.info.nombre + "\"];\n")
+			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.siguiente.id) + ";\n")
+			if not cola:
+				file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.anterior.id) + ";\n")
+			nodo = nodo.siguiente
+			contador += 1
+		file.write("\n}")
+		file.close()
+		if cola:
+			subprocess.call(["dot","ColaCircular.dot","-Tpng","-o","ColaCircular.png", "-Gcharset=latin1"])
+		else:
+			subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png", "-Gcharset=latin1"])
+
 	def obtenerLista(self):
 		nodo = self.inicio
 		contador = 0
 		texto = ""
 		while contador < self.tamano:
 			texto += nodo.info.nombre + " ---- " + nodo.info.path + "\n"
-			print nodo.info.nombre + ", " + str(contador)
 			nodo = nodo.siguiente
 			contador += 1
 		return texto
-
-	def graficar(self):
-		file = open('ListaCircular.dot', 'w')
-		file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
-		nodo = self.inicio
-		contador = 0
-		while contador < self.tamano:
-			file.write("nodo" + str(nodo.id) + " [label = \"nombre: " + nodo.info.nombre + ", path: " + nodo.info.path + "\"];\n")
-			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.siguiente.id) + ";\n")
-			file.write("nodo" + str(nodo.id) + " -> nodo" + str(nodo.anterior.id) + ";\n")
-			nodo = nodo.siguiente
-			contador += 1
-		file.write("\n}")
-		file.close()
-		subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png", "-Gcharset=latin1"])

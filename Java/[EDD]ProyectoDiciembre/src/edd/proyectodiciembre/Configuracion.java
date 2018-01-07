@@ -11,10 +11,13 @@ import javax.swing.JOptionPane;
 public class Configuracion extends javax.swing.JFrame {
 
     private final Conexion conexion;
+    private final  String usuario, contrasena;
 
-    public Configuracion(Conexion conexion) {
+    public Configuracion(Conexion conexion, String usuario, String contrasena) {
         initComponents();
         this.conexion = conexion;
+        this.usuario = usuario;
+        this.contrasena = contrasena;
         ocultar();
     }
 
@@ -30,6 +33,11 @@ public class Configuracion extends javax.swing.JFrame {
         jTextField4.setVisible(false);
         jTextField5.setVisible(false);
         jButton1.setVisible(false);
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
     }
 
     @SuppressWarnings("unchecked")
@@ -117,8 +125,8 @@ public class Configuracion extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/confi.jpg"))); // NOI18N
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 590, 430));
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/c.jpg"))); // NOI18N
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(-20, 0, 610, 430));
 
         jMenu1.setText("Eliminar");
 
@@ -347,45 +355,55 @@ public class Configuracion extends javax.swing.JFrame {
         String seleccion = ((javax.swing.JButton) evt.getSource()).getText();
         switch (seleccion) {
             case "Eliminar usuario.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0)
-                    conexion.eliminar_usuario(jTextField1.getText(), jTextField2.getText());
-                else 
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0){
+                    String resultado = conexion.eliminar_usuario(jTextField1.getText(), jTextField2.getText(), usuario, contrasena);
+                    if (resultado != null)
+                        JOptionPane.showMessageDialog(rootPane, resultado);
+                    else
+                        JOptionPane.showMessageDialog(rootPane, "Error al eliminar usuario.");
+                }else 
                     JOptionPane.showMessageDialog(rootPane, "Ingrese ambos campos.");
                 break;
             case "Eliminar año.":
-                if (jTextField1.getText().length() > 0) 
+                if (jTextField1.getText().length() > 0) {
                     conexion.eliminar_ano(jTextField1.getText());
-                else
+                    JOptionPane.showMessageDialog(rootPane, "Año eliminado.");
+                } else
                     JOptionPane.showMessageDialog(rootPane, "Ingrese el año.");
                 break;
             case "Eliminar genero.":
-                if (jTextField1.getText().length() > 0)
+                if (jTextField1.getText().length() > 0){
                     conexion.eliminar_genero(jTextField1.getText());
-                else
+                    JOptionPane.showMessageDialog(rootPane, "Género eliminado.");
+                } else
                     JOptionPane.showMessageDialog(rootPane, "Ingrese el genero.");
                 break;
             case "Eliminar artistas.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0)
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0){
                     conexion.eliminar_artistas(jTextField1.getText(), jTextField2.getText());
-                else
+                    JOptionPane.showMessageDialog(rootPane, "Artistas eliminados.");
+                }else
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Eliminar artista.":
-                if (jTextField1.getText().length() > 0)
+                if (jTextField1.getText().length() > 0){
                     conexion.eliminar_artista(jTextField1.getText());
-                else
+                    JOptionPane.showMessageDialog(rootPane, "Artista eliminado.");
+                }else
                     JOptionPane.showMessageDialog(rootPane, "Ingrese el artista.");
                 break;
             case "Eliminar album.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0)
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0){
                     conexion.eliminar_album(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText());
-                else
+                    JOptionPane.showMessageDialog(rootPane, "Album eliminado.");
+                } else
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Eliminar canción.":
-                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0 && jTextField5.getText().length() > 0)
+                if (jTextField1.getText().length() > 0 && jTextField2.getText().length() > 0 && jTextField3.getText().length() > 0 && jTextField4.getText().length() > 0 && jTextField5.getText().length() > 0){
                     conexion.eliminar_cancion(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText(), jTextField5.getText());
-                else
+                    JOptionPane.showMessageDialog(rootPane, "Cancion eliminada.");
+                } else
                     JOptionPane.showMessageDialog(rootPane, "Ingrese todos los campos.");
                 break;
             case "Graficar Arbol B.":
@@ -393,7 +411,7 @@ public class Configuracion extends javax.swing.JFrame {
                     try {
                         conexion.graficar_arbol_b(jTextField1.getText(), jTextField2.getText());
                         Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ArbolB.png"));
-                    } catch (IOException ex) {
+                    } catch (IOException | IllegalArgumentException ex) {
                         System.out.println("Error: " + ex.getMessage());
                     }
                 else
@@ -404,7 +422,7 @@ public class Configuracion extends javax.swing.JFrame {
                     try {
                         conexion.graficar_abb(jTextField1.getText(), jTextField2.getText(), jTextField3.getText());
                         Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ArbolBinario.png"));
-                    } catch (IOException ex) {
+                    } catch (IOException | IllegalArgumentException ex) {
                         System.out.println("Error: " + ex.getMessage());
                     }
                 else
@@ -415,7 +433,7 @@ public class Configuracion extends javax.swing.JFrame {
                     try {
                         conexion.graficar_lista_circular(jTextField1.getText(), jTextField2.getText(), jTextField3.getText(), jTextField4.getText());
                         Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaCircular.png"));
-                    } catch (IOException ex) {
+                    } catch (IOException | IllegalArgumentException ex) {
                         System.out.println("Error: " + ex.getMessage());
                     }
                 else
@@ -477,17 +495,17 @@ public class Configuracion extends javax.swing.JFrame {
         conexion.graficar_lista_doble();
         try {
             Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaDoble.png"));
-        } catch (IOException ex) {
+        } catch (IOException | IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
         ocultar();
-        conexion.graficar_lista_circular_usuario();
+        conexion.graficar_cola_circular_usuario(usuario, contrasena);
         try {
-            Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ListaCircular.png"));
-        } catch (IOException ex) {
+            Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\ColaCircular.png"));
+        } catch (IOException | IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem13ActionPerformed
@@ -497,7 +515,7 @@ public class Configuracion extends javax.swing.JFrame {
         conexion.graficar_matriz();
         try {
             Desktop.getDesktop().open(new File("C:\\Users\\Usuario\\Matriz.png"));
-        } catch (IOException ex) {
+        } catch (IOException | IllegalArgumentException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
     }//GEN-LAST:event_jMenuItem8ActionPerformed

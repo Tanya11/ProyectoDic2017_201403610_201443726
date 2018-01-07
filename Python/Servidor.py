@@ -23,50 +23,50 @@ def init():
 # LOGIN
 @app.route('/ingresar', methods = ['POST'])
 def ingresar():
-	nombre = (request.form['nombre']).encode('ISO-8859-1')
-	contrasena = (request.form['contrasena']).encode('ISO-8859-1')
+	nombre = (request.form['nombre']).encode('utf8')
+	contrasena = (request.form['contrasena']).encode('utf8')
 	lg = usuarios.buscar(nombre, contrasena)
 	if lg == None:
 		return "Credenciales incorrectas."
 	logueado = lg.Usuario
+	print logueado.nombre
 	return "Ingreso exitoso."
 
 # LOGOUT
 @app.route('/salir', methods = ['POST'])
 def salir():
-	txt = (request.form['txt']).encode('ISO-8859-1')
+	txt = (request.form['txt']).encode('utf8')
 	logueado = ListaDoble.Usuario("", "")
 	return ""
 
 # INSERTAR
 @app.route('/insertar_usuario', methods = ['POST'])
 def insertar_usuario():
-	nombre = (request.form['nombre']).encode('ISO-8859-1')
-	contrasena = (request.form['contrasena']).encode('ISO-8859-1')
+	nombre = (request.form['nombre']).encode('utf8')
+	contrasena = (request.form['contrasena']).encode('utf8')
 	if usuarios.insertar(nombre, contrasena):
 		return "Usuario creado."
 	return "Nombre de usuario ya en uso."
 
 @app.route('/agregar_a_lista', methods = ['POST'])
 def agregar_a_lista():
-	nombre = (request.form['nombre']).encode('ISO-8859-1')
-	path = (request.form['path']).encode('ISO-8859-1')
+	nombre = (request.form['nombre']).encode('utf8')
+	path = (request.form['path']).encode('utf8')
+	print logueado.nombre
 	if logueado.nombre != "":
-		if logueado.lista != None:
-			logueado.lista.insertar(nombre, path)
-		else:
+		if logueado.lista == None:
 			logueado.lista = ListaCanciones.ListaCanciones()
-			logueado.lista.insertar(nombre, path)
+		logueado.lista.insertar(nombre, path)
 	return ""	
 
 @app.route('/agregar_cancion', methods=['POST'])
 def agregar_cancion():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	artista = (request.form['artista']).encode('ISO-8859-1')
-	album = (request.form['album']).encode('ISO-8859-1')
-	nombre = (request.form['nombre']).encode('ISO-8859-1')
-	path = (request.form['path']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
+	artista = (request.form['artista']).encode('utf8')
+	album = (request.form['album']).encode('utf8')
+	nombre = (request.form['nombre']).encode('utf8')
+	path = (request.form['path']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if (ab == None): # No existe el nodo con ese ano y genero: se inserta desde la matriz
 		canciones = ListaCanciones.ListaCanciones()
@@ -100,16 +100,19 @@ def agregar_cancion():
 # ELIMINAR
 @app.route('/eliminar_usuario', methods=['POST'])
 def eliminar_usuario():
-	nombre = (request.form['nombre']).encode('ISO-8859-1')
-	contrasena = (request.form['contrasena']).encode('ISO-8859-1')
+	nombre = (request.form['nombre']).encode('utf8')
+	contrasena = (request.form['contrasena']).encode('utf8')
+	if logueado.nombre == nombre:
+		return "No te puedes eliminar."
 	usuario_ = usuarios.buscar(nombre, contrasena)
 	if usuario_ != None:
 		usuarios.eliminar(nombre)
-	return ""
+		return "Usuario eliminado."
+	return "Usuario no encontrado."
 
 @app.route('/eliminar_ano', methods=['POST'])
 def eliminar_ano():
-	ano = (request.form['ano']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
 	auxiliar = repertorio.inicio.derecha
 	while auxiliar != None:
 		repertorio.eliminar(ano, auxiliar.genero)
@@ -118,7 +121,7 @@ def eliminar_ano():
 
 @app.route('/eliminar_genero', methods=['POST'])
 def eliminar_genero():
-	genero = (request.form['genero']).encode('ISO-8859-1')
+	genero = (request.form['genero']).encode('utf8')
 	auxiliar = repertorio.inicio.abajo
 	while auxiliar != None:
 		repertorio.eliminar(auxiliar.ano, genero)
@@ -127,14 +130,14 @@ def eliminar_genero():
 
 @app.route('/eliminar_artistas', methods=['POST'])
 def eliminar_artistas():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
 	repertorio.eliminar(ano, genero)
 	return ""
 
 @app.route('/eliminar_artista', methods=['POST'])
 def eliminar_artista():
-	artista = (request.form['artista']).encode('ISO-8859-1')
+	artista = (request.form['artista']).encode('utf8')
 	if repertorio.id != 1:
 		nodoFila = repertorio.inicio.abajo
 		nodoDato = None
@@ -142,7 +145,7 @@ def eliminar_artista():
 			nodoDato = nodoFila.derecha
 			while nodoDato != None:
 				nodoDato.artistas.eliminar(artista)
-				if nodoDato.artistas.raiz.cuenta == 0:
+				if nodoDato.artistas.raiz == None or nodoDato.artistas.raiz.cuenta == 0:
 					repertorio.eliminar(nodoDato.ano, nodoDato.genero)
 				nodoDato = nodoDato.derecha
 			nodoFila = nodoFila.abajo
@@ -150,36 +153,36 @@ def eliminar_artista():
 
 @app.route('/eliminar_album', methods=['POST'])
 def eliminar_album():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	artista = (request.form['artista']).encode('ISO-8859-1')
-	album = (request.form['album']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
+	artista = (request.form['artista']).encode('utf8')
+	album = (request.form['album']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab != None:
 		indice = 0
 		pagina = None
-		pagina, indice = ab.artistas.buscar(ab.raiz, artista, bandera)
+		pagina, indice = ab.artistas.buscar(ab.artistas.raiz, artista, indice)
 		if pagina != None:
 			abb = pagina.nodos[indice].albumes
 			abb.eliminar(album)
 			if abb.nodo == None:
 				ab.artistas.eliminar(artista)
-				if ab.artistas.raiz.cuenta == 0:
+				if ab.artistas.raiz == None or ab.artistas.raiz.cuenta == 0:
 					repertorio.eliminar(ano, genero)
 	return ""
 
 @app.route('/eliminar_cancion', methods=['POST'])
 def eliminar_cancion():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	artista = (request.form['artista']).encode('ISO-8859-1')
-	album = (request.form['album']).encode('ISO-8859-1')
-	nombre = (request.form['nombre']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
+	artista = (request.form['artista']).encode('utf8')
+	album = (request.form['album']).encode('utf8')
+	nombre = (request.form['nombre']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab != None:
 		indice = 0
 		pagina = None
-		pagina, indice = ab.artistas.buscar(ab.raiz, artista, bandera)
+		pagina, indice = ab.artistas.buscar(ab.artistas.raiz, artista, indice)
 		if pagina != None:
 			abb = pagina.nodos[indice].albumes
 			lc = abb.buscar(album)
@@ -189,21 +192,21 @@ def eliminar_cancion():
 					abb.eliminar(album)
 					if abb.nodo == None:
 						ab.artistas.eliminar(artista)
-						if ab.artistas.raiz.cuenta == 0:
+						if ab.artistas.raiz == None or ab.artistas.raiz.cuenta == 0:
 							repertorio.eliminar(ano, genero)
 	return ""
 
 # GRAFICAR
 @app.route('/graficar_matriz', methods=['POST'])
 def graficar_matriz():
-	txt = (request.form['txt']).encode('ISO-8859-1')
+	txt = (request.form['txt']).encode('utf8')
 	repertorio.graficar()
 	return ""
 
 @app.route('/graficar_arbol_b', methods=['POST'])
 def graficar_arbol_b():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab != None:
 		ab.artistas.graficar()
@@ -211,9 +214,9 @@ def graficar_arbol_b():
 
 @app.route('/graficar_abb', methods=['POST'])
 def graficar_abb():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	artista = (request.form['artista']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
+	artista = (request.form['artista']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab != None:
 		indice = 0
@@ -225,10 +228,10 @@ def graficar_abb():
 
 @app.route('/graficar_lista_circular', methods=['POST'])
 def graficar_lista_circular():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	artista = (request.form['artista']).encode('ISO-8859-1')
-	album = (request.form['album']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
+	artista = (request.form['artista']).encode('utf8')
+	album = (request.form['album']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab != None:
 		indice = 0
@@ -238,27 +241,31 @@ def graficar_lista_circular():
 			abb = pagina.nodos[indice].albumes
 			lc = abb.buscar(album)
 			if lc != None:
-				lc.lista.graficar()
+				lc.lista.graficar(False)
 	return ""
 
 @app.route('/graficar_lista_doble', methods=['POST'])
 def graficar_lista_doble():
-	txt = (request.form['txt']).encode('ISO-8859-1')
+	txt = (request.form['txt']).encode('utf8')
 	usuarios.graficar()
 	return ""
 
-@app.route('/graficar_lista_circular_usuario', methods=['POST'])
-def graficar_lista_circular_usuario():
-	txt = (request.form['txt']).encode('ISO-8859-1')
+@app.route('/graficar_cola_circular_usuario', methods=['POST'])
+def graficar_cola_circular_usuario():
+	txt = (request.form['txt']).encode('utf8')
 	if logueado.nombre != "":
 		if logueado.lista != None:
-			logueado.lista.graficar()
+			logueado.lista.graficar(True)
+		else:
+			print "lista vacia"
+	else:
+		print "Usuario no logueado"
 	return ""
 
 # OBTENER LISTA A REPRODUCIR
 @app.route('/canciones_artista', methods = ['POST'])
 def canciones_artista():
-	artista = (request.form['artista']).encode('ISO-8859-1')
+	artista = (request.form['artista']).encode('utf8')
 	texto = ""
 	nodo = repertorio.inicio.abajo
 	indice = 0
@@ -279,10 +286,10 @@ def canciones_artista():
 
 @app.route('/canciones_album', methods = ['POST'])
 def canciones_album():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	artista = (request.form['artista']).encode('ISO-8859-1')
-	album = (request.form['album']).encode('ISO-8859-1')
+	ano = (request.form['ano']).encode('utf8')
+	genero = (request.form['genero']).encode('utf8')
+	artista = (request.form['artista']).encode('utf8')
+	album = (request.form['album']).encode('utf8')
 	ab = repertorio.obtenerArtistas(ano, genero)
 	if ab != None:
 		indice = 0
@@ -295,35 +302,38 @@ def canciones_album():
 				return lc.lista.obtenerLista()
 	return ""
 
+@app.route('/canciones_shuffle', methods = ['POST'])
+def canciones_shuffle():
+	txt = (request.form['txt']).encode('utf8')
+	return ""
+
 @app.route('/canciones_genero', methods = ['POST'])
 def canciones_genero():
-	genero = (request.form['genero']).encode('ISO-8859-1')
-	#Este codigo hace llorar a la ram :'v
-	"""ab = repertorio.obtenerGenero(genero)
-	genero = ""
+	genero = (request.form['genero']).encode('utf8')
+	ab = repertorio.obtenerGenero(genero)
+	txt = ""
 	if ab != None:
 		ab = ab.abajo
 		while ab != None:
-			genero += ab.artistas.obtenerLista(ab.artistas.raiz, genero)
-			ab = ab.abajo"""
-	return genero
+			txt += ab.artistas.obtenerLista(ab.artistas.raiz, "")
+			ab = ab.abajo
+	return txt
 
 @app.route('/canciones_ano', methods = ['POST'])
 def canciones_ano():
-	ano = (request.form['ano']).encode('ISO-8859-1')
-	#Este codigo hace llorar a la ram :'v x2
-	"""ab = repertorio.obtenerAno(ano)
-	ano = ""
+	ano = (request.form['ano']).encode('utf8')
+	ab = repertorio.obtenerAno(ano)
+	txt = ""
 	if ab != None:
 		ab = ab.derecha
 		while ab != None:
-			ano += ab.artistas.obtenerLista(ab.artistas.raiz, ano)
-			ab = ab.derecha"""
-	return ano
+			txt += ab.artistas.obtenerLista(ab.artistas.raiz, "")
+			ab = ab.derecha
+	return txt
 
 @app.route('/canciones_usuario', methods = ['POST'])
 def canciones_usuario():
-	txt = (request.form['txt']).encode('ISO-8859-1')
+	txt = (request.form['txt']).encode('utf8')
 	txt = ""
 	if logueado != None:
 		if logueado.lista != None:

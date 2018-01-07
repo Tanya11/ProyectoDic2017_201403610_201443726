@@ -92,16 +92,16 @@ class ArbolBinario(object):
 	def __enlazar(self, actual, cadena):
 		if(actual != None):
 			if(actual.derecha.nodo != None):
-				cadena += "n" + str(actual.aidi) + " -> n" + str(actual.derecha.nodo.aidi) + "[label = \"d\"];\n"
+				cadena += "n" + str(actual.aidi) + " -> n" + str(actual.derecha.nodo.aidi) + "[label = \"der\"];\n"
 				cadena = self.__enlazar(actual.derecha.nodo, cadena)
 			if(actual.izquierda.nodo != None):
-				cadena += "n" + str(actual.aidi) + " -> n"+ str(actual.izquierda.nodo.aidi) + "[label = \"i\"];\n"
+				cadena += "n" + str(actual.aidi) + " -> n"+ str(actual.izquierda.nodo.aidi) + "[label = \"izq\"];\n"
 				cadena = self.__enlazar(actual.izquierda.nodo, cadena)
 		return cadena
 
 	def obtenerLista(self, nodo, texto):
 		if nodo != None:
-			texto += nodo.izquierda.obtenerLista(nodo.izquierda.nodo, texto)
+			texto = nodo.izquierda.obtenerLista(nodo.izquierda.nodo, texto)
 			texto += nodo.lista.obtenerLista()
-			texto += nodo.derecha.obtenerLista(nodo.derecha.nodo, texto)
+			texto = nodo.derecha.obtenerLista(nodo.derecha.nodo, texto)
 		return texto

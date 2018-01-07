@@ -92,13 +92,15 @@ public class Conexion {
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
-        System.out.println(nombre);
+        System.out.println(nombre + " " + path);
     }
 
-    public void agregar_a_lista(String nombre, String path) {
+    public void agregar_a_lista(String nombre, String path, String usuario, String contrasena) {
         rb = new FormEncodingBuilder()
                 .add("nombre", nombre)
                 .add("path", path)
+                .add("usuario", usuario)
+                .add("contrasena", contrasena)
                 .build();
         try {
             URL url = new URL("http://0.0.0.0:5000/agregar_a_lista");
@@ -111,20 +113,24 @@ public class Conexion {
         }
     }
 
-    public void eliminar_usuario(String nombre, String contrasena){
+    public String eliminar_usuario(String nombre, String contrasena, String usuario, String contrasena2){
         rb = new FormEncodingBuilder()
                 .add("nombre", nombre)
                 .add("contrasena", contrasena)
+                .add("usuario", usuario)
+                .add("contrasena2", contrasena2)
                 .build();
         try {
             URL url = new URL("http://0.0.0.0:5000/eliminar_usuario");
             Request request = new Request.Builder().url(url).post(rb).build();
-            webClient.newCall(request).execute();
+            Response r = webClient.newCall(request).execute();
+            return r.body().string();
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
+        return null;
     }
     
     public void eliminar_ano(String ano) {
@@ -306,12 +312,13 @@ public class Conexion {
         }
     }
 
-    public void graficar_lista_circular_usuario() {
+    public void graficar_cola_circular_usuario(String usuario, String contrasena) {
         rb = new FormEncodingBuilder()
-                .add("txt", "")
+                .add("usuario", usuario)
+                .add("contrasena", contrasena)
                 .build();
         try {
-            URL url = new URL("http://0.0.0.0:5000/graficar_lista_circular_usuario");
+            URL url = new URL("http://0.0.0.0:5000/graficar_cola_circular_usuario");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
         } catch (MalformedURLException ex) {
@@ -407,5 +414,20 @@ public class Conexion {
             System.out.println(ex.toString());
         }
         return null;
+    }
+    
+    public void canciones_shuffle(){
+        rb = new FormEncodingBuilder()
+                .add("txt", "")
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/canciones_shuffle");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            webClient.newCall(request).execute();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
     }
 }

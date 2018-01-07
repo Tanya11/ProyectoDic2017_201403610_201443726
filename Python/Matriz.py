@@ -42,10 +42,10 @@ class Matriz:
 		return auxiliar
 
 	def obtenerArtistas(self, ano, genero):
-		if self.obtenerAno(ano) != None and self.obtenerGenero(genero) != None:
-			nodoAno = self.obtenerAno(ano)
-			nodoGenero = self.obtenerGenero(genero)
-			return self.__obtenerArtistas(nodoAno, nodoGenero)
+		NodoGenero = self.obtenerGenero(genero)
+		NodoAno = self.obtenerAno(ano)
+		if NodoAno != None and NodoGenero != None:
+			return self.__obtenerArtistas(NodoAno, NodoGenero)
 		return None
 
 	def insertar(self, ano, genero, artistas):
@@ -174,9 +174,9 @@ class Matriz:
 					break
 
 	def eliminar(self, ano, genero):
-		if self.obtenerAno(ano) != None and self.obtenerGenero(genero) != None:
-			NodoGenero = self.obtenerGenero(genero)
-			NodoAno = self.obtenerAno(ano)
+		NodoGenero = self.obtenerGenero(genero)
+		NodoAno = self.obtenerAno(ano)
+		if NodoAno != None and NodoGenero != None:
 			NodoDato = self.__obtenerArtistas(NodoAno, NodoGenero)
 			if NodoDato != None:
 				NodoDato.izquierda.derecha = NodoDato.derecha
