@@ -1,4 +1,4 @@
-import subprocess, commands
+import subprocess
 
 class NodoBinario(object):
 	def __init__(self, album, lista):
@@ -54,7 +54,7 @@ class ArbolBinario(object):
 			else:
 				self.nodo.derecha.eliminar(album)
 
-	def graficar(self):
+	def graficar(self, path):
 		self.generarID(self.nodo, self.contador)
 		cadena = "digraph arbol {\n"
 		if(self.nodo != None):
@@ -62,10 +62,11 @@ class ArbolBinario(object):
 			cadena += "\n"
 			cadena = self.__enlazar(self.nodo, cadena)
 		cadena += "}"
-		Archivo = open('ArbolBinario.dot', 'w')
+		path += "ArbolBinario"
+		Archivo = open('.dot', 'w')
 		Archivo.write(cadena)
 		Archivo.close()
-		subprocess.call(["dot","ArbolBinario.dot","-Tpng","-o","ArbolBinario.png", "-Gcharset=latin1"])
+		subprocess.call(["dot", path + ".dot", "-Tpng", "-o", path + ".png", "-Gcharset=latin1"])
 
 	def generarID(self, nodo, contador):
 		if nodo != None:

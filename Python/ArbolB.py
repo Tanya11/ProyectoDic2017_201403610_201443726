@@ -1,4 +1,4 @@
-import NodoB, Pagina, subprocess, commands
+import NodoB, Pagina, subprocess
 
 class ArbolB(object):
 	def __init__ (self, orden):
@@ -213,8 +213,9 @@ class ArbolB(object):
 			contador += 1
 		padre.cuenta -= 1
 
-	def graficar(self):
-		archivo = open('ArbolB.dot','w')
+	def graficar(self, path):
+		path += "ArbolB"
+		archivo = open(path + '.dot','w')
 		archivo.write('digraph ArbolB{ \nnode[shape=record]\n')
 		self._gpaginas(self.raiz)
 		archivo.write(self.grafo + "\n")
@@ -223,7 +224,7 @@ class ArbolB(object):
 		archivo.write(self.grafo + "\n}")
 		self.grafo = ""
 		archivo.close()
-		subprocess.call(["dot","ArbolB.dot", "-Tpng", "-o", "ArbolB.png", "-Gcharset=latin1"])
+		subprocess.call(["dot", path + ".dot", "-Tpng", "-o", path + ".png", "-Gcharset=latin1"])
 
 	def _genlazes(self, actual):
 		if actual != None:
