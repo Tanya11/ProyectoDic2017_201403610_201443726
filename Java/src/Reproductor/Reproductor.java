@@ -33,6 +33,8 @@ public class Reproductor {
     }
     
     private void cambiar(int i){
+        if (lista == null || lista.isEmpty())
+            return;
         posicion += i;
         if(posicion < 0)
             posicion = lista.size() - 1;
@@ -79,16 +81,20 @@ public class Reproductor {
     }
 
     public void siguiente() {
-        detener();
-        cambiar(+1);
-        is_play = true;
-        reproducir();
+        try {
+            detener();
+            cambiar(+1);
+            is_play = true;
+            reproducir();
+        } catch (Exception e) {}
     }
 
     public void anterior() {
-        detener();
-        cambiar(-1);
-        is_play = true;
-        reproducir();
+        try {
+            detener();
+            cambiar(-1);
+            is_play = true;
+            reproducir();
+        } catch (Exception e) {}
     }
 }
