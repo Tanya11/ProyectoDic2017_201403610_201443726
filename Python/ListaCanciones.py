@@ -1,11 +1,10 @@
-import subprocess, commands
+import subprocess
 
 
 class InfoCancion(object):
 	def __init__(self, nombre, path):
 		self.nombre = nombre
 		self.path = path
-		print nombre
 
 class NodoCancion(object):
 	def __init__(self, anterior, info, siguiente):
@@ -57,12 +56,14 @@ class ListaCanciones(object):
 			aux = aux.siguiente
 		return False
 
-	def graficar(self, cola):
+	def graficar(self, cola, path):
+		file = open(path + '.dot', 'w')
 		if cola:
-			file = open('ColaCircular.dot', 'w')
+			path += "ColaCircular"
+			file.write("digraph ColaCircular{\n label=\"Cola Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
 		else:
-			file = open('ListaCircular.dot', 'w')
-		file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
+			path += "ListaCircular"
+			file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
 		nodo = self.inicio
 		contador = 0
 		while contador < self.tamano:
@@ -74,10 +75,7 @@ class ListaCanciones(object):
 			contador += 1
 		file.write("\n}")
 		file.close()
-		if cola:
-			subprocess.call(["dot","ColaCircular.dot","-Tpng","-o","ColaCircular.png", "-Gcharset=latin1"])
-		else:
-			subprocess.call(["dot","ListaCircular.dot","-Tpng","-o","ListaCircular.png", "-Gcharset=latin1"])
+		subprocess.call(["dot", path + ".dot","-Tpng", "-o", path + ".png", "-Gcharset=latin1"])
 
 	def obtenerLista(self):
 		nodo = self.inicio

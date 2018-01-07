@@ -1,4 +1,4 @@
-import subprocess, commands
+import subprocess
 
 class NodoMatriz:
 	def __init__(self, artistas):
@@ -210,7 +210,8 @@ class Matriz:
 		else:
 			print "El dato no existe alv"
 
-	def graficar(self):
+	def graficar(self, path):
+		path += "Matriz"
 		Grafo_dot = "digraph Matriz{\n\trankdir=UD;\n\tnode [shape = box];\n\tlabel = \"Matriz\"" 
 		paraAbajo = self.inicio
 		paraDerecha = paraAbajo.derecha
@@ -227,7 +228,7 @@ class Matriz:
 				Grafo_dot += "\n\t\tNode" + str(paraAbajo.id) + " [label = \"" + paraAbajo.ano + "\"]"
 			while paraDerecha != None:
 				if y == 0:
-					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.genero + "\", rankdir = LR]"
+					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"" + paraDerecha.genero + "\"]"
 				else:
 					Grafo_dot += "\n\t\tNode" + str(paraDerecha.id) + " [label = \"Arbol B (" + str(paraDerecha.id) + ")\"]"
 				paraDerecha = paraDerecha.derecha
@@ -262,7 +263,7 @@ class Matriz:
 			if paraAbajo != None:
 				paraDerecha = paraAbajo.derecha
 		Grafo_dot += "\n}" 
-		Archivo = open('Matriz.dot', 'w') 
+		Archivo = open(path + '.dot', 'w') 
 		Archivo.write(Grafo_dot) 
 		Archivo.close() 
-		subprocess.call(["dot","Matriz.dot","-Tpng","-o","Matriz.png", "-Gcharset=latin1"])
+		subprocess.call(["dot", path + ".dot", "-Tpng", "-o", path + ".png", "-Gcharset=latin1"])

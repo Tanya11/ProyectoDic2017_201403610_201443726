@@ -1,5 +1,4 @@
-import subprocess, commands
-
+import subprocess
 class NodoDoble:
 	def __init__(self, Usuario):
 		self.Usuario = Usuario
@@ -56,8 +55,9 @@ class ListaDoble:
 			if eliminado.siguiente != None:
 				eliminado.siguiente.anterior = eliminado.anterior
   	
-	def graficar(self):
-		file = open('ListaDoble.dot', 'w')
+	def graficar(self, path):
+		path += "ListaDoble"
+		file = open(path + '.dot', 'w')
 		file.write("digraph ListaDoble{\n label=\"Lista Doble\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
 		nodito = self.cabeza
 		contador = 0
@@ -74,4 +74,4 @@ class ListaDoble:
 			contador += 1
 		file.write("\n}")
 		file.close()
-		subprocess.call(["dot","ListaDoble.dot","-Tpng","-o","ListaDoble.png", "-Gcharset=latin1"])
+		subprocess.call(["dot", path + ".dot", "-Tpng", "-o", path + ".png", "-Gcharset=latin1"])
