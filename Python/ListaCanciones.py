@@ -57,12 +57,13 @@ class ListaCanciones(object):
 		return False
 
 	def graficar(self, cola, path):
-		file = open(path + '.dot', 'w')
 		if cola:
 			path += "ColaCircular"
+			file = open(path + '.dot', 'w')
 			file.write("digraph ColaCircular{\n label=\"Cola Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
 		else:
 			path += "ListaCircular"
+			file = open(path + '.dot', 'w')
 			file.write("digraph ListaCircular{\n label=\"Lista Circular\"\n \tnode [fontcolor=\"red\",height=0.5,color=\"black\"]\n \tedge [color=\"black\", dir=fordware]\n")
 		nodo = self.inicio
 		contador = 0

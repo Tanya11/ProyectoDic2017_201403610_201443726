@@ -23,6 +23,7 @@ public class Principal extends javax.swing.JFrame {
     private final String usuario, contrasena;
 
     public Principal(Conexion conexion, String usuario, String contrasena) {
+        super("Bienvenido " + usuario);
         initComponents();
         ocultar();
         this.conexion = conexion;
@@ -294,7 +295,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        if (seleccionado.length > 0)
+        Reproductor.modo = "";
+        if (seleccionado != null && seleccionado.length > 0)
             conexion.agregar_a_lista(seleccionado[4], seleccionado[5], usuario, contrasena);
         else
             System.out.println("error");
@@ -370,6 +372,8 @@ public class Principal extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(rootPane, "Escriba el nombre del artista.");
                     }else{
                         lista = conexion.canciones_artista(p1);
+                        if (lista == null || lista.length() == 0)
+                            JOptionPane.showMessageDialog(rootPane, "El artista no existe.");
                     }
                     break;
                 case "Todas las canciones de un album":
@@ -381,6 +385,8 @@ public class Principal extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(rootPane, "Escriba todos los parámetros.");
                     }else{
                         lista = conexion.canciones_album(p1, p2, p3, p4);
+                        if (lista == null || lista.length() == 0)
+                            JOptionPane.showMessageDialog(rootPane, "El album no existe.");
                     }
                     break;
                 case "Todas las canciones de un genero":
@@ -389,6 +395,8 @@ public class Principal extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(rootPane, "Escriba el género.");
                     }else{
                         lista = conexion.canciones_genero(p1);
+                        if (lista == null || lista.length() == 0)
+                            JOptionPane.showMessageDialog(rootPane, "El género no existe.");
                     }
                     break;
                 case "Todas las canciones de un año":
@@ -397,20 +405,27 @@ public class Principal extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(rootPane, "Escriba el año.");
                     }else{
                         lista = conexion.canciones_ano(p1);
+                        if (lista == null || lista.length() == 0)
+                            JOptionPane.showMessageDialog(rootPane, "El año no existe.");
                     }
                     break;
                 case "Todas las canciones de tu cola":
                     lista = conexion.canciones_usuario(usuario, contrasena);
+                    if (lista == null || lista.length() == 0)
+                        JOptionPane.showMessageDialog(rootPane, "Tu cola está vacía.");
                     break;
                 case "Shuffle play":
                     conexion.canciones_shuffle();
                     int aleatorio;
                     String[] atributos;
+                    lista = "";
                     for(int i = 0; i < canciones; i++){
                         aleatorio = (int) (Math.random() * canciones);
                         atributos = (jList1.getModel().getElementAt(aleatorio).toString().split(" -> ")[1]).split(" ---- ");
                         lista += atributos[4] + " ---- " + atributos[5] + "\n";
                     }
+                    if (lista == null || lista.length() == 0)
+                        JOptionPane.showMessageDialog(rootPane, "No se han agregado canciones.");
                     break;
             }
             if(lista == null){

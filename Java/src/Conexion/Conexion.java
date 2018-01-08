@@ -406,8 +406,8 @@ public class Conexion {
     
     public String canciones_usuario(String usuario, String contrasena){
         rb = new FormEncodingBuilder()
-                .add("usuario", "usuario")
-                .add("contrasena", "contrasena")
+                .add("usuario", usuario)
+                .add("contrasena", contrasena)
                 .build();
         try {
             URL url = new URL("http://0.0.0.0:5000/canciones_usuario");

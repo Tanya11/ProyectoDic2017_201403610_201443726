@@ -337,12 +337,12 @@ def canciones_ano():
 def canciones_usuario():
 	usuario = (request.form['usuario']).encode('utf8')
 	contrasena = (request.form['contrasena']).encode('utf8')
-	txt = ""
 	logueado = usuarios.buscar(usuario, contrasena)
 	if logueado != None:
-		if logueado.lista != None:
-			return logueado.lista.obtenerLista()
-	return txt
+		usr = logueado.Usuario
+		if usr.lista != None:
+			return usr.lista.obtenerLista()
+	return ""
 
 #RUN DEL SERVER
 if __name__ == "__main__":
