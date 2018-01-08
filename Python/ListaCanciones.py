@@ -1,6 +1,5 @@
 import subprocess
 
-
 class InfoCancion(object):
 	def __init__(self, nombre, path):
 		self.nombre = nombre
@@ -18,23 +17,18 @@ class ListaCanciones(object):
 		self.inicio = None
 		self.tamano = 0
 
-	def estaVacia(self):
-		return (False, True)[self.tamano == 0]
-
 	def insertar(self, nombre, path):
-		nuevo = None
 		info = InfoCancion(nombre, path)
-		if self.estaVacia():
-			nuevo = NodoCancion(None, info, None)
-			nuevo.siguiente = nuevo
-			nuevo.anterior = nuevo
-			nuevo.id = 0
-			self.inicio = nuevo
+		if self.tamano == 0:
+			self.inicio = NodoCancion(None, info, None)
+			self.inicio.siguiente = self.inicio
+			self.inicio.anterior = self.inicio
+			self.inicio.id = 0
 			self.tamano = 1
 		else:
 			nuevo = NodoCancion(self.inicio.anterior, info, self.inicio)
-			nuevo.id = self.inicio.anterior.id + 1
-			self.inicio.anterior.siguiente = nuevo
+			nuevo.id = nuevo.anterior.id + 1
+			nuevo.anterior.siguiente = nuevo
 			self.inicio.anterior = nuevo
 			self.tamano += 1
 		return True
@@ -84,6 +78,16 @@ class ListaCanciones(object):
 		texto = ""
 		while contador < self.tamano:
 			texto += nodo.info.nombre + " ---- " + nodo.info.path + "\n"
+			nodo = nodo.siguiente
+			contador += 1
+		return texto
+
+	def canciones(self, album, artista, genero, ano):
+		nodo = self.inicio
+		contador = 0
+		texto = ""
+		while contador < self.tamano:
+			texto += artista + " ---- " + album + " ---- " + ano + " ---- " + genero + " ---- " + nodo.info.nombre + " ---- " + nodo.info.path + "\n"
 			nodo = nodo.siguiente
 			contador += 1
 		return texto

@@ -142,6 +142,9 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_ano");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
+            for(Cancion n: actual)
+                if(n.getAno().equals(ano))
+                    actual.remove(n);
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -157,6 +160,9 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_genero");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
+            for(Cancion n: actual)
+                if(n.getGenero().equals(genero))
+                    actual.remove(n);
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -173,6 +179,9 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_artistas");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
+            for(Cancion n: actual)
+                if(n.getAno().equals(ano) && n.getGenero().equals(genero))
+                    actual.remove(n);
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -188,6 +197,9 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_artista");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
+            for(Cancion n: actual)
+                if(n.getArtista().equals(artista))
+                    actual.remove(n);
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -206,6 +218,9 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_album");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
+            for(Cancion n: actual)
+                if(n.getAlbum().equals(album) && n.getAno().equals(ano) && n.getArtista().equals(artista) && n.getGenero().equals(genero))
+                    actual.remove(n);
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -225,6 +240,11 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_cancion");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
+            for(Cancion n: actual)
+                if(n.getAlbum().equals(album) && n.getAno().equals(ano) && n.getArtista().equals(artista) && n.getGenero().equals(genero) && n.getNombre().equals(nombre)){
+                    actual.remove(n);
+                    break;
+                }
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -422,18 +442,37 @@ public class Conexion {
         return null;
     }
     
-    public void canciones_shuffle(){
+    public String canciones_shuffle(){
         rb = new FormEncodingBuilder()
                 .add("txt", "")
                 .build();
         try {
             URL url = new URL("http://0.0.0.0:5000/canciones_shuffle");
             Request request = new Request.Builder().url(url).post(rb).build();
-            webClient.newCall(request).execute();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
             System.out.println(ex.toString());
         }
+        return null;
+    }
+
+    public String buscar_album(String cadena) {
+        rb = new FormEncodingBuilder()
+                .add("album", cadena)
+                .build();
+        try {
+            URL url = new URL("http://0.0.0.0:5000/buscar_album");
+            Request request = new Request.Builder().url(url).post(rb).build();
+            Response response = webClient.newCall(request).execute();
+            return response.body().string();
+        } catch (MalformedURLException ex) {
+            System.out.println(ex.toString());
+        } catch (IOException ex) {
+            System.out.println(ex.toString());
+        }
+        return null;
     }
 }

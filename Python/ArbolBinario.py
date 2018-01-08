@@ -106,3 +106,13 @@ class ArbolBinario(object):
 			texto += nodo.lista.obtenerLista()
 			texto = nodo.derecha.obtenerLista(nodo.derecha.nodo, texto)
 		return texto
+
+	def buscar_album(self, album, artista, genero, ano):
+		if self.nodo != None:
+			if self.nodo.album == album:
+				return self.nodo.lista.canciones(album, artista, genero, ano)
+			elif self.nodo.album > album:
+				return self.nodo.izquierda.buscar_album(album, artista, genero, ano)
+			else:
+				return self.nodo.derecha.buscar_album(album, artista, genero, ano)
+		return ""

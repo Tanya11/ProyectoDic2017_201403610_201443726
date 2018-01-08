@@ -253,3 +253,16 @@ class ArbolB(object):
 					texto += pagina.nodos[indice].albumes.obtenerLista(pagina.nodos[indice].albumes.nodo, texto)
 				indice += 1
 		return texto
+
+	def buscar_album(self, pagina, album, genero, ano):
+		if pagina != None:
+			indice = 0
+			cadena = ""
+			lista = ""
+			while indice <= pagina.cuenta:
+				cadena = self.buscar_album(pagina.ramas[indice], album, genero, ano)
+				if pagina.nodos[indice] != None:
+					lista += cadena + pagina.nodos[indice].albumes.buscar_album(album, pagina.nodos[indice].artista, genero, ano)
+				indice += 1
+			return lista
+		return ""

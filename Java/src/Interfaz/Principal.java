@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.Color;
 import static java.lang.Thread.sleep;
 import java.util.ArrayList;
+import static java.lang.Thread.sleep;
 
 /**
  *
@@ -16,11 +17,12 @@ import java.util.ArrayList;
 public class Principal extends javax.swing.JFrame {
 
     private int canciones;
-    private Thread nombre;
     private String[] seleccionado;
+    private boolean play_is_enable;
     private final Conexion conexion;
     private final Reproductor Reproductor;
     private final String usuario, contrasena;
+    private Thread actualizar_interfaz, actualizar_label;
 
     public Principal(Conexion conexion, String usuario, String contrasena) {
         super("Bienvenido " + usuario);
@@ -29,9 +31,9 @@ public class Principal extends javax.swing.JFrame {
         this.conexion = conexion;
         this.usuario = usuario;
         this.contrasena = contrasena;
-        llenar();
         Reproductor = new Reproductor();
-        actualizar();
+        actualizar_interfaz();
+        play_is_enable = true;
     }
     
     private void ocultar(){
@@ -50,35 +52,47 @@ public class Principal extends javax.swing.JFrame {
         jTextField5.setText("Album");
     }
     
-    private void llenar() {
-        canciones = 0;
-        String Linea[] = new String[conexion.actual.size()];
-        for (Cancion actual : conexion.actual)
-            Linea[canciones++] = canciones + " -> " + actual.getArtista() + " ---- " + actual.getAlbum() + " ---- " + actual.getAno() + " ---- " + actual.getGenero() + " ---- " + actual.getNombre() + " ---- " + actual.getPath();
-        jList1.setModel(new AbstractListModel() {
-            String[] Lineas = Linea;
+    private void actualizar_interfaz() {
+        actualizar_interfaz = new Thread(){
             @Override
-            public int getSize() { return Lineas.length; }
-            @Override
-            public Object getElementAt(int index) { return Lineas[index]; }
-        });
-        jList1.setForeground(new Color(0,204,0));
-        jList1.repaint();
+            public void run(){
+                try {
+                    canciones = 0;
+                    String Linea[] = new String[conexion.actual.size()];
+                    for (Cancion actual : conexion.actual)
+                        Linea[canciones++] = canciones + " -> " + actual.getArtista() + " ---- " + actual.getAlbum() + " ---- " + actual.getAno() + " ---- " + actual.getGenero() + " ---- " + actual.getNombre() + " ---- " + actual.getPath();
+                    jList1.setModel(new AbstractListModel() {
+                        String[] Lineas = Linea;
+                        @Override
+                        public int getSize() { return Lineas.length; }
+                        @Override
+                        public Object getElementAt(int index) { return Lineas[index]; }
+                    });
+                    jList1.setForeground(new Color(0,204,0));
+                    jList1.repaint();
+                    if (Reproductor.actual != null)
+                        jLabel5.setText(Reproductor.actual.getNombre());
+                    sleep(1000);
+                    actualizar_interfaz();
+                } catch (InterruptedException e) {}
+            }
+        };
+        actualizar_interfaz.start();
     }
-
-    private void actualizar(){
-        nombre = new Thread(){
+    
+    private void actualizar_label(){
+        actualizar_label = new Thread(){
             @Override
             public void run(){
                 try {
                     if (Reproductor.actual != null)
                         jLabel5.setText(Reproductor.actual.getNombre());
                     sleep(1000);
-                    actualizar();
+                    actualizar_label();
                 } catch (InterruptedException e) {}
             }
         };
-        nombre.start();
+        actualizar_label.start();
     }
     
     @SuppressWarnings("unchecked")
@@ -133,6 +147,16 @@ public class Principal extends javax.swing.JFrame {
         jTextField1.setForeground(new java.awt.Color(0, 204, 0));
         jTextField1.setText("Buscar");
         jTextField1.setName("tex2"); // NOI18N
+        jTextField1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTextField1MouseClicked(evt);
+            }
+        });
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextField1KeyPressed(evt);
+            }
+        });
         getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 150, 30));
 
         jComboBox1.setBackground(new java.awt.Color(0, 0, 51));
@@ -147,7 +171,6 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 210, 30));
 
         pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imágenes/play.jpg"))); // NOI18N
-        pausa.setEnabled(false);
         pausa.setName("pausa"); // NOI18N
         pausa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +180,6 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(pausa, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 540, 80, 70));
 
         anterior.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imágenes/atras.jpg"))); // NOI18N
-        anterior.setEnabled(false);
         anterior.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 anteriorActionPerformed(evt);
@@ -174,7 +196,6 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().add(play, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 540, 70, 70));
 
         siguiente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imágenes/siguiente.jpg"))); // NOI18N
-        siguiente.setEnabled(false);
         siguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 siguienteActionPerformed(evt);
@@ -268,7 +289,7 @@ public class Principal extends javax.swing.JFrame {
                 jTextField4MouseClicked(evt);
             }
         });
-        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 330, 150, 20));
+        getContentPane().add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 330, 150, -1));
 
         jTextField5.setBackground(new java.awt.Color(0, 0, 51));
         jTextField5.setForeground(new java.awt.Color(0, 153, 0));
@@ -304,6 +325,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         conexion.salir();
+        Reproductor.detener();
         setVisible(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -313,6 +335,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         ocultar();
+        Reproductor.detener();
         String seleccion = ((javax.swing.JComboBox) evt.getSource()).getSelectedItem().toString();
         switch (seleccion) {
             case "Todas las canciones de un artista":
@@ -346,104 +369,108 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
-        pausa.setEnabled(true);
-        anterior.setEnabled(true);
-        siguiente.setEnabled(true);
-        play.setEnabled(false);
-        String modo, p1, p2, p3, p4, lista;
-        modo = jComboBox1.getSelectedItem().toString();
-        if (modo.equals("Elige uno...")) {
-            JOptionPane.showMessageDialog(rootPane, "Elige un modo de reproducción.");
-            pausa.setEnabled(false);
-            anterior.setEnabled(false);
-            siguiente.setEnabled(false);
-            play.setEnabled(true);
-        } else if(Reproductor.modo.equals(modo)){
-            Reproductor.reproducir();
-        } else {
-            try {
-                Reproductor.detener();
-            } catch (Exception e) {}
-            lista = "";
-            switch (modo) {
-                case "Todas las canciones de un artista":
-                    p1 = jTextField2.getText();
-                    if(p1.equals("Artista") || p1.length() == 0){
-                        JOptionPane.showMessageDialog(rootPane, "Escriba el nombre del artista.");
-                    }else{
-                        lista = conexion.canciones_artista(p1);
-                        if (lista == null || lista.length() == 0)
-                            JOptionPane.showMessageDialog(rootPane, "El artista no existe.");
-                    }
-                    break;
-                case "Todas las canciones de un album":
-                    p1 = jTextField2.getText();
-                    p2 = jTextField3.getText();
-                    p3 = jTextField4.getText();
-                    p4 = jTextField5.getText();
-                    if((p1.equals("Año") || p1.length() == 0) && (p2.equals("Genero") || p2.length() == 0) && (p3.equals("Artista") || p3.length() == 0) && (p4.equals("Album") || p4.length() == 0)){
-                        JOptionPane.showMessageDialog(rootPane, "Escriba todos los parámetros.");
-                    }else{
-                        lista = conexion.canciones_album(p1, p2, p3, p4);
-                        if (lista == null || lista.length() == 0)
-                            JOptionPane.showMessageDialog(rootPane, "El album no existe.");
-                    }
-                    break;
-                case "Todas las canciones de un genero":
-                    p1 = jTextField2.getText();
-                    if(p1.equals("Genero") || p1.length() == 0){
-                        JOptionPane.showMessageDialog(rootPane, "Escriba el género.");
-                    }else{
-                        lista = conexion.canciones_genero(p1);
-                        if (lista == null || lista.length() == 0)
-                            JOptionPane.showMessageDialog(rootPane, "El género no existe.");
-                    }
-                    break;
-                case "Todas las canciones de un año":
-                    p1 = jTextField2.getText();
-                    if(p1.equals("Año") || p1.length() == 0){
-                        JOptionPane.showMessageDialog(rootPane, "Escriba el año.");
-                    }else{
-                        lista = conexion.canciones_ano(p1);
-                        if (lista == null || lista.length() == 0)
-                            JOptionPane.showMessageDialog(rootPane, "El año no existe.");
-                    }
-                    break;
-                case "Todas las canciones de tu cola":
-                    lista = conexion.canciones_usuario(usuario, contrasena);
-                    if (lista == null || lista.length() == 0)
-                        JOptionPane.showMessageDialog(rootPane, "Tu cola está vacía.");
-                    break;
-                case "Shuffle play":
-                    conexion.canciones_shuffle();
-                    int aleatorio;
-                    String[] atributos;
-                    lista = "";
-                    for(int i = 0; i < canciones; i++){
-                        aleatorio = (int) (Math.random() * canciones);
-                        atributos = (jList1.getModel().getElementAt(aleatorio).toString().split(" -> ")[1]).split(" ---- ");
-                        lista += atributos[4] + " ---- " + atributos[5] + "\n";
-                    }
-                    if (lista == null || lista.length() == 0)
-                        JOptionPane.showMessageDialog(rootPane, "No se han agregado canciones.");
-                    break;
-            }
-            if(lista == null){
-                System.out.println("Error: No se ha podido obtener la lista.");
-            } else if(lista.length() > 0){
-                Reproductor.modo = modo;
-                ArrayList<Cancion> actual = new ArrayList<>();
-                String[] lineas = lista.split("\n");
-                String[] atributos;
-                for(String linea: lineas){
-                    atributos = linea.split(" ---- ");
-                    actual.add(new Cancion(atributos[0], atributos[1], "", "", "", ""));
+        if(play_is_enable){
+            String modo, parametro1, parametro2, parametro3, parametro4, cadena;
+            modo = jComboBox1.getSelectedItem().toString();
+            if (modo.equals("Elige uno...")) {
+                JOptionPane.showMessageDialog(rootPane, "Elige un modo de reproducción.");
+                pausa.setEnabled(false);
+                anterior.setEnabled(false);
+                siguiente.setEnabled(false);
+                play.setEnabled(true);
+            } else if(Reproductor.modo.equals(modo)){
+                Reproductor.reproducir();
+            } else {
+                try {
+                    Reproductor.detener();
+                } catch (Exception e) {}
+                cadena = "";
+                switch (modo) {
+                    case "Todas las canciones de un artista":
+                        parametro1 = jTextField2.getText();
+                        if(parametro1.equals("Artista") || parametro1.length() == 0){
+                            JOptionPane.showMessageDialog(rootPane, "Escriba el nombre del artista.");
+                        }else{
+                            cadena = conexion.canciones_artista(parametro1);
+                            if (cadena == null || cadena.length() == 0)
+                                JOptionPane.showMessageDialog(rootPane, "El artista no existe.");
+                        }
+                        break;
+                    case "Todas las canciones de un album":
+                        parametro1 = jTextField2.getText();
+                        parametro2 = jTextField3.getText();
+                        parametro3 = jTextField4.getText();
+                        parametro4 = jTextField5.getText();
+                        if((parametro1.equals("Año") || parametro1.length() == 0) && (parametro2.equals("Genero") || parametro2.length() == 0) && (parametro3.equals("Artista") || parametro3.length() == 0) && (parametro4.equals("Album") || parametro4.length() == 0)){
+                            JOptionPane.showMessageDialog(rootPane, "Escriba todos los parámetros.");
+                        }else{
+                            cadena = conexion.canciones_album(parametro1, parametro2, parametro3, parametro4);
+                            if (cadena == null || cadena.length() == 0)
+                                JOptionPane.showMessageDialog(rootPane, "El album no existe.");
+                        }
+                        break;
+                    case "Todas las canciones de un genero":
+                        parametro1 = jTextField2.getText();
+                        if(parametro1.equals("Genero") || parametro1.length() == 0){
+                            JOptionPane.showMessageDialog(rootPane, "Escriba el género.");
+                        }else{
+                            cadena = conexion.canciones_genero(parametro1);
+                            if (cadena == null || cadena.length() == 0)
+                                JOptionPane.showMessageDialog(rootPane, "El género no existe.");
+                        }
+                        break;
+                    case "Todas las canciones de un año":
+                        parametro1 = jTextField2.getText();
+                        if(parametro1.equals("Año") || parametro1.length() == 0){
+                            JOptionPane.showMessageDialog(rootPane, "Escriba el año.");
+                        }else{
+                            cadena = conexion.canciones_ano(parametro1);
+                            if (cadena == null || cadena.length() == 0)
+                                JOptionPane.showMessageDialog(rootPane, "El año no existe.");
+                        }
+                        break;
+                    case "Todas las canciones de tu cola":
+                        cadena = conexion.canciones_usuario(usuario, contrasena);
+                        if (cadena == null || cadena.length() == 0)
+                            JOptionPane.showMessageDialog(rootPane, "Tu cola está vacía.");
+                        break;
+                    case "Shuffle play":
+                        cadena = conexion.canciones_shuffle();
+                        int aleatorio, size;
+                        String[] atributos;
+                        ArrayList<Integer> agregados = new ArrayList<>();
+                        if (agregados.isEmpty())
+                            cadena = "";
+                        for(size = agregados.size(); size < canciones; size = agregados.size()){
+                            aleatorio = (int) (Math.random() * canciones);
+                            if(!agregados.contains(aleatorio)){
+                                atributos = (jList1.getModel().getElementAt(aleatorio).toString().split(" -> ")[1]).split(" ---- ");
+                                cadena += atributos[4] + " ---- " + atributos[5] + "\n";
+                                agregados.add(aleatorio);
+                            }
+                        }
+                        if (cadena.equals("") || cadena.length() == 0)
+                            JOptionPane.showMessageDialog(rootPane, "No se han agregado canciones.");
+                        break;
                 }
-                Reproductor.reproducir(actual);
+                if(cadena == null){
+                    System.out.println("Error: No se ha podido obtener la lista.");
+                } else if(cadena.length() > 0){
+                    Reproductor.modo = modo;
+                    ArrayList<Cancion> actual = new ArrayList<>();
+                    String[] lineas = cadena.split("\n");
+                    String[] atributos;
+                    for(String linea: lineas){
+                        atributos = linea.split(" ---- ");
+                        actual.add(new Cancion(atributos[0], atributos[1], "", "", "", ""));
+                    }
+                    Reproductor.reproducir(actual);
+                }
             }
         }
+        play_is_enable = false;
     }//GEN-LAST:event_playActionPerformed
-
+    
     private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
         ((javax.swing.JTextField) evt.getSource()).setText("");
         ((javax.swing.JTextField) evt.getSource()).setForeground(Color.white);
@@ -465,26 +492,55 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3MouseClicked
 
     private void pausaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaActionPerformed
-        play.setEnabled(true);
-        pausa.setEnabled(false);
-        Reproductor.pausar();
+        if(!play_is_enable)
+            Reproductor.pausar();
+        play_is_enable = true;
     }//GEN-LAST:event_pausaActionPerformed
 
     private void anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anteriorActionPerformed
-        pausa.setEnabled(true);
-        anterior.setEnabled(true);
-        siguiente.setEnabled(true);
-        play.setEnabled(false);
-        Reproductor.anterior();
+        if(!play_is_enable)
+            Reproductor.anterior();
+        play_is_enable = true;
     }//GEN-LAST:event_anteriorActionPerformed
 
     private void siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteActionPerformed
-        pausa.setEnabled(true);
-        anterior.setEnabled(true);
-        siguiente.setEnabled(true);
-        play.setEnabled(false);
-        Reproductor.siguiente();
+        if(!play_is_enable)
+            Reproductor.siguiente();
+        play_is_enable = true;
     }//GEN-LAST:event_siguienteActionPerformed
+
+    private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed
+        if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER){
+            String cadena = jTextField1.getText();
+            try { actualizar_interfaz.stop(); } catch (Exception e) { }
+            if(cadena.length() > 0){
+                try {
+                    cadena = conexion.buscar_album(cadena);
+                    canciones = 0;
+                    String[] cancion = cadena.split("\n");
+                    String Linea[] = new String[cancion.length];
+                    for (String linea : cancion)
+                        Linea[canciones++] = canciones + " -> " + linea;
+                    jList1.setModel(new AbstractListModel() {
+                        String[] Lineas = Linea;
+                        @Override
+                        public int getSize() { return Lineas.length; }
+                        @Override
+                        public Object getElementAt(int index) { return Lineas[index]; }
+                    });
+                    jList1.setForeground(new Color(0,204,0));
+                    jList1.repaint();
+                    actualizar_label();
+                } catch (Exception e) { }
+            }else
+                actualizar_interfaz();
+        }
+    }//GEN-LAST:event_jTextField1KeyPressed
+
+    private void jTextField1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField1MouseClicked
+        ((javax.swing.JTextField) evt.getSource()).setText("");
+        ((javax.swing.JTextField) evt.getSource()).setForeground(Color.white);
+    }//GEN-LAST:event_jTextField1MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anterior;
