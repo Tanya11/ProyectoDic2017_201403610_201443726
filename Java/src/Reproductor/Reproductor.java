@@ -21,11 +21,11 @@ public class Reproductor {
 
     public Reproductor() {
         modo = "";
-        posicion = 0;
         is_play = false;
     }
 
     public void reproducir(ArrayList<Cancion> lista) {
+        posicion = 0;
         this.lista = lista;
         cambiar(0);
         is_play = true;

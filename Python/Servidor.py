@@ -279,7 +279,7 @@ def canciones_artista():
 			pagina, indice = ab.artistas.buscar(ab.artistas.raiz, artista, indice)
 			if pagina != None:
 				abb = pagina.nodos[indice].albumes
-				texto += abb.obtenerLista(abb.nodo, texto)
+				texto += abb.obtenerLista(abb.nodo)
 			indice = 0
 			pagina = None
 			ab = ab.derecha
@@ -313,25 +313,25 @@ def canciones_shuffle():
 def canciones_genero():
 	genero = (request.form['genero']).encode('utf8')
 	ab = repertorio.obtenerGenero(genero)
-	txt = ""
+	texto = ""
 	if ab != None:
 		ab = ab.abajo
 		while ab != None:
-			txt += ab.artistas.obtenerLista(ab.artistas.raiz, "")
+			texto += ab.artistas.obtenerLista(ab.artistas.raiz)
 			ab = ab.abajo
-	return txt
+	return texto
 
 @app.route('/canciones_ano', methods = ['POST'])
 def canciones_ano():
 	ano = (request.form['ano']).encode('utf8')
 	ab = repertorio.obtenerAno(ano)
-	txt = ""
+	texto = ""
 	if ab != None:
 		ab = ab.derecha
 		while ab != None:
-			txt += ab.artistas.obtenerLista(ab.artistas.raiz, "")
+			texto += ab.artistas.obtenerLista(ab.artistas.raiz)
 			ab = ab.derecha
-	return txt
+	return texto
 
 @app.route('/canciones_usuario', methods = ['POST'])
 def canciones_usuario():
@@ -343,6 +343,24 @@ def canciones_usuario():
 		if usr.lista != None:
 			return usr.lista.obtenerLista()
 	return ""
+
+@app.route('/buscar_album', methods = ['POST'])
+def buscar_album():
+	album = (request.form['album']).encode('utf8')
+	cadena = ""
+	fila = repertorio.inicio.abajo
+	indice = 0
+	pagina = None
+	nodo = None
+	ab = None
+	while fila != None:
+		nodo = fila.derecha
+		while nodo != None:
+			ab = nodo.artistas
+			cadena += ab.buscar_album(ab.raiz, album, nodo.genero, nodo.ano)
+			nodo = nodo.derecha
+		fila = fila.abajo
+	return cadena
 
 #RUN DEL SERVER
 if __name__ == "__main__":
