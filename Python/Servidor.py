@@ -279,7 +279,7 @@ def canciones_artista():
 			pagina, indice = ab.artistas.buscar(ab.artistas.raiz, artista, indice)
 			if pagina != None:
 				abb = pagina.nodos[indice].albumes
-				texto += abb.obtenerLista(abb.nodo, texto)
+				texto += abb.obtenerLista(abb.nodo)
 			indice = 0
 			pagina = None
 			ab = ab.derecha
@@ -313,12 +313,11 @@ def canciones_shuffle():
 def canciones_genero():
 	genero = (request.form['genero']).encode('utf8')
 	ab = repertorio.obtenerGenero(genero)
-	txt = ""
 	texto = ""
 	if ab != None:
 		ab = ab.abajo
 		while ab != None:
-			texto += ab.artistas.obtenerLista(ab.artistas.raiz, txt)
+			texto += ab.artistas.obtenerLista(ab.artistas.raiz)
 			ab = ab.abajo
 	return texto
 
@@ -326,12 +325,11 @@ def canciones_genero():
 def canciones_ano():
 	ano = (request.form['ano']).encode('utf8')
 	ab = repertorio.obtenerAno(ano)
-	txt = ""
 	texto = ""
 	if ab != None:
 		ab = ab.derecha
 		while ab != None:
-			texto += ab.artistas.obtenerLista(ab.artistas.raiz, txt)
+			texto += ab.artistas.obtenerLista(ab.artistas.raiz)
 			ab = ab.derecha
 	return texto
 

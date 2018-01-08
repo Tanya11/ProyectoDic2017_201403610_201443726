@@ -336,6 +336,7 @@ public class Principal extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         ocultar();
         Reproductor.detener();
+        play_is_enable = true;
         String seleccion = ((javax.swing.JComboBox) evt.getSource()).getSelectedItem().toString();
         switch (seleccion) {
             case "Todas las canciones de un artista":
@@ -370,14 +371,12 @@ public class Principal extends javax.swing.JFrame {
 
     private void playActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playActionPerformed
         if(play_is_enable){
+            play_is_enable = false;
             String modo, parametro1, parametro2, parametro3, parametro4, cadena;
             modo = jComboBox1.getSelectedItem().toString();
             if (modo.equals("Elige uno...")) {
                 JOptionPane.showMessageDialog(rootPane, "Elige un modo de reproducción.");
-                pausa.setEnabled(false);
-                anterior.setEnabled(false);
-                siguiente.setEnabled(false);
-                play.setEnabled(true);
+                play_is_enable = true;
             } else if(Reproductor.modo.equals(modo)){
                 Reproductor.reproducir();
             } else {
@@ -468,7 +467,6 @@ public class Principal extends javax.swing.JFrame {
                 }
             }
         }
-        play_is_enable = false;
     }//GEN-LAST:event_playActionPerformed
     
     private void jTextField2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTextField2MouseClicked
@@ -500,13 +498,13 @@ public class Principal extends javax.swing.JFrame {
     private void anteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anteriorActionPerformed
         if(!play_is_enable)
             Reproductor.anterior();
-        play_is_enable = true;
+        play_is_enable = false;
     }//GEN-LAST:event_anteriorActionPerformed
 
     private void siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_siguienteActionPerformed
         if(!play_is_enable)
             Reproductor.siguiente();
-        play_is_enable = true;
+        play_is_enable = false;
     }//GEN-LAST:event_siguienteActionPerformed
 
     private void jTextField1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyPressed

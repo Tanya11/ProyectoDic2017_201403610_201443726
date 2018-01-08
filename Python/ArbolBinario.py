@@ -100,11 +100,12 @@ class ArbolBinario(object):
 				cadena = self.__enlazar(actual.izquierda.nodo, cadena)
 		return cadena
 
-	def obtenerLista(self, nodo, texto):
+	def obtenerLista(self, nodo):
+		texto = ""
 		if nodo != None:
-			texto = nodo.izquierda.obtenerLista(nodo.izquierda.nodo, texto)
+			texto += nodo.izquierda.obtenerLista(nodo.izquierda.nodo)
 			texto += nodo.lista.obtenerLista()
-			texto = nodo.derecha.obtenerLista(nodo.derecha.nodo, texto)
+			texto += nodo.derecha.obtenerLista(nodo.derecha.nodo)
 		return texto
 
 	def buscar_album(self, album, artista, genero, ano):

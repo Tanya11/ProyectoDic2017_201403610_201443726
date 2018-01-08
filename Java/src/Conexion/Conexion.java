@@ -12,9 +12,10 @@ import com.squareup.okhttp.*;
  */
 public class Conexion {
 
-    private final OkHttpClient webClient;
     private RequestBody rb;
     public ArrayList<Cancion> actual;
+    private final OkHttpClient webClient;
+    private ArrayList<Integer> eliminados;
 
     public Conexion() {
         this.webClient = new OkHttpClient();
@@ -142,9 +143,15 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_ano");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
-            for(Cancion n: actual)
+            int indice = 0;
+            eliminados = new ArrayList<>();
+            for(Cancion n: actual){
                 if(n.getAno().equals(ano))
-                    actual.remove(n);
+                    eliminados.add(indice);
+                indice++;
+            }
+            for(indice = eliminados.size() - 1; indice >= 0; indice--)
+                actual.remove((int) eliminados.get(indice));
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -160,9 +167,15 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_genero");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
-            for(Cancion n: actual)
-                if(n.getGenero().equals(genero))
-                    actual.remove(n);
+            int indice = 0;
+            eliminados = new ArrayList<>();
+            for(Cancion n: actual){
+                if(n.getAno().equals(genero))
+                    eliminados.add(indice);
+                indice++;
+            }
+            for(indice = eliminados.size() - 1; indice >= 0; indice--)
+                actual.remove((int) eliminados.get(indice));
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -179,9 +192,15 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_artistas");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
-            for(Cancion n: actual)
+            int indice = 0;
+            eliminados = new ArrayList<>();
+            for(Cancion n: actual){
                 if(n.getAno().equals(ano) && n.getGenero().equals(genero))
-                    actual.remove(n);
+                    eliminados.add(indice);
+                indice++;
+            }
+            for(indice = eliminados.size() - 1; indice >= 0; indice--)
+                actual.remove((int) eliminados.get(indice));
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -197,9 +216,15 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_artista");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
-            for(Cancion n: actual)
+            int indice = 0;
+            eliminados = new ArrayList<>();
+            for(Cancion n: actual){
                 if(n.getArtista().equals(artista))
-                    actual.remove(n);
+                    eliminados.add(indice);
+                indice++;
+            }
+            for(indice = eliminados.size() - 1; indice >= 0; indice--)
+                actual.remove((int) eliminados.get(indice));
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -218,9 +243,15 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_album");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
-            for(Cancion n: actual)
+            int indice = 0;
+            eliminados = new ArrayList<>();
+            for(Cancion n: actual){
                 if(n.getAlbum().equals(album) && n.getAno().equals(ano) && n.getArtista().equals(artista) && n.getGenero().equals(genero))
-                    actual.remove(n);
+                    eliminados.add(indice);
+                indice++;
+            }
+            for(indice = eliminados.size() - 1; indice >= 0; indice--)
+                actual.remove((int) eliminados.get(indice));
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {
@@ -240,11 +271,15 @@ public class Conexion {
             URL url = new URL("http://0.0.0.0:5000/eliminar_cancion");
             Request request = new Request.Builder().url(url).post(rb).build();
             webClient.newCall(request).execute();
-            for(Cancion n: actual)
-                if(n.getAlbum().equals(album) && n.getAno().equals(ano) && n.getArtista().equals(artista) && n.getGenero().equals(genero) && n.getNombre().equals(nombre)){
-                    actual.remove(n);
-                    break;
-                }
+            int indice = 0;
+            eliminados = new ArrayList<>();
+            for(Cancion n: actual){
+                if(n.getAlbum().equals(album) && n.getAno().equals(ano) && n.getArtista().equals(artista) && n.getGenero().equals(genero) && n.getNombre().equals(nombre))
+                    eliminados.add(indice);
+                indice++;
+            }
+            for(indice = eliminados.size() - 1; indice >= 0; indice--)
+                actual.remove((int) eliminados.get(indice));
         } catch (MalformedURLException ex) {
             System.out.println(ex.toString());
         } catch (IOException ex) {

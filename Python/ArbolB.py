@@ -55,7 +55,7 @@ class ArbolB(object):
 			esta = False
 			esta, indice = self.__buscarNodo(actual, artista.artista, indice)
 			if esta:
-				print "Nombre de artista duplicado: '" + str(artista.artista) + "'."
+				# "Nombre de artista duplicado."
 				return False, None, None, self.raiz
 			subir, mediana, nuevo, actual.ramas[indice] = self.__mover(actual.ramas[indice], artista, mediana, nuevo)
 			if subir:
@@ -108,7 +108,7 @@ class ArbolB(object):
 		raiz_ = Pagina.Pagina()
 		encontrado, raiz_ = self.__eliminarNodo(raiz, artista, encontrado)
 		if encontrado:
-			print "Artista "+ artista + " fue eliminado."
+			# "El artista fue eliminado."
 			if raiz_.estaVacia():
 				raiz_ = raiz_.ramas[0]
 		else:
@@ -244,13 +244,14 @@ class ArbolB(object):
 					self._gpaginas(actual.ramas[index])
 				index += 1
 
-	def obtenerLista(self, pagina, texto):
+	def obtenerLista(self, pagina):
+		texto = ""
 		if pagina != None:
 			indice = 0
 			while indice <= pagina.cuenta:
-				texto = self.obtenerLista(pagina.ramas[indice], texto)
+				texto += self.obtenerLista(pagina.ramas[indice])
 				if pagina.nodos[indice] != None:
-					texto += pagina.nodos[indice].albumes.obtenerLista(pagina.nodos[indice].albumes.nodo, texto)
+					texto += pagina.nodos[indice].albumes.obtenerLista(pagina.nodos[indice].albumes.nodo)
 				indice += 1
 		return texto
 
