@@ -205,10 +205,6 @@ class Matriz:
 							NodoAno.abajo.arriba = NodoAno.arriba
 						else:
 							NodoAno.abajo.arriba = None
-			else:
-				print "El dato no existe alv"
-		else:
-			print "El dato no existe alv"
 
 	def graficar(self, path):
 		path += "Matriz"
