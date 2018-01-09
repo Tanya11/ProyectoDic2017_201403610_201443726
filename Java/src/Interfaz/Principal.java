@@ -320,7 +320,7 @@ public class Principal extends javax.swing.JFrame {
         if (seleccionado != null && seleccionado.length > 0)
             conexion.agregar_a_lista(seleccionado[4], seleccionado[5], usuario, contrasena);
         else
-            System.out.println("error");
+            JOptionPane.showMessageDialog(rootPane, "No se ha seleccionado una canción.");
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
